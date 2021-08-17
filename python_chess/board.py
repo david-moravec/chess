@@ -18,21 +18,53 @@ class Board:
         self.startingSetup()
 
     def startingSetup(self):
-       self.pieces.append(p.Knight('g', 0, 'b', self))
+        self.applyFENposition("rnbkqbnr/pppppppp/8/8/8/8/pppppppp/rnbkqbnr")
 
     def update(self, piece):
-        x = TranslateAlgebraicNotation(piece.x)
+        if (isinstance(piece.x, int)):
+            x = piece.x
+        else:
+            x = TranslateAlgebraicNotation(piece.x)
         y = piece.y
-        self.tiles[x][y] = piece
+        self.tiles[y][x] = piece
+
+    def applyFENposition(self, fen_string):
+        x = 0
+        y = 0
+        for line in fen_string.split("/"):
+            for char in line:
+                try:
+                    x += float(char)
+                except ValueError:
+                    self.initPieceInPosition(char, x, y)
+                    x+=1
+            x = 0
+            y+=1
+
+    def initPieceInPosition(self, char, x, y):
+        if char == "n":
+            p.Knight(x, y, "b", self)
+        elif char == "b":
+            p.Bishop(x, y, "b", self)
+        elif char == "r":
+            p.Rook(x, y, "b", self)
+        elif char == "q":
+            p.Queen(x, y, "b", self)
+        elif char == "k":
+            p.King(x, y, "b", self)
+        elif char == "p":
+            p.Pawn(x, y, "b", self)
+
+        
         
 def TranslateAlgebraicNotation(x):
     try:
-        coord = AlgebraicNotationDict[x]
-        return coord.value
+        x = AlgebraicNotationDict[x]
+        return x.value
     except:
-        coord = AlgebraicNotation(x)
+        x = AlgebraicNotation(x)
         for key in AlgebraicNotationDict.keys():
-            if coord == AlgebraicNotationDict[key]:
+            if x == AlgebraicNotationDict[key]:
                 return key
 
 class AlgebraicNotation(enum.Enum):
