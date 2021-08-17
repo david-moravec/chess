@@ -18,7 +18,7 @@ class Board:
         self.startingSetup()
 
     def startingSetup(self):
-        self.applyFENposition("rnbkqbnr/pppppppp/8/8/8/8/pppppppp/rnbkqbnr")
+        self.applyFENposition("rnbkqbnr/ppppppp/8/8/8/8/pppppppp/rnbkqbnr")
 
     def update(self, piece):
         if (isinstance(piece.x, int)):
@@ -34,7 +34,7 @@ class Board:
         for line in fen_string.split("/"):
             for char in line:
                 try:
-                    x += float(char)
+                    x += int(char)
                 except ValueError:
                     self.initPieceInPosition(char, x, y)
                     x+=1
