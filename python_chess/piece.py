@@ -1,18 +1,18 @@
 class Piece:
-    def __init__(self, x, y, team, board):
-        self.team  = team
+    def __init__(self, x, y, name, board):
+        self.name  = name
         self.movePiece(x, y, board)
 
     def movePiece(self, new_x, new_y, board):
-        self.makeMove(new_x, new_y)
+        self.makeMove(new_x, new_y, board)
         board.update(self)
 
-    def makeMove(self, x, y):
-        if self.checkMove(x, y) == True:
+    def makeMove(self, x, y, board):
+        if self.checkMove(x, y, board) == True:
             self.x = x
             self.y = y
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         pass
 
 class Knight(Piece):
@@ -22,7 +22,10 @@ class Knight(Piece):
     def __repr__(self):
         return "n"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
+        for x in range(-2, 2, 4):
+            for y in range(-2, 2, 4):
+                return True
         return True
 
 class Bishop(Piece):
@@ -32,7 +35,7 @@ class Bishop(Piece):
     def __repr__(self):
         return "b"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         return True
         
 class Rook(Piece):
@@ -42,7 +45,7 @@ class Rook(Piece):
     def __repr__(self):
         return "r"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         return True
 
 class Queen(Piece):
@@ -52,7 +55,7 @@ class Queen(Piece):
     def __repr__(self):
         return "q"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         return True
     
 class King(Piece):
@@ -62,7 +65,7 @@ class King(Piece):
     def __repr__(self):
         return "k"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         return True
 
 class Pawn(Piece):
@@ -72,5 +75,5 @@ class Pawn(Piece):
     def __repr__(self):
         return "p"
 
-    def checkMove(self, x, y):
+    def checkMove(self, x, y, board):
         return True
