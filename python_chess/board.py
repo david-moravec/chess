@@ -1,32 +1,46 @@
 import piece as p
 import enum
-import tkinter as tk
 from gui import GameBoard
+from tkinter import Tk
 
 class Board:
     def __init__(self):
         self.createBoard()
-        #self.game()
+        self.game()
 
     def createBoard(self):
+        self.tiles = []
         self.pieces = []
+
+        for i in range(8):
+            x = []
+            for i in range(8):
+                x.append(".")
+            self.tiles.append(x)
+
         self.startingSetup()
 
     def startingSetup(self):
         self.applyFENposition("rnbkqbnr/ppppppp/8/8/8/8/pppppppp/rnbkqbnr")
 
     def game(self):
-        root = tk.Tk()
+        root = Tk()
         chessBoard = GameBoard(root)
-        chessBoard.update(self.pieces)
-        while True:
-            
+        chessBoard.placePieces(self.pieces, root)
+        chessBoard.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+        root.mainloop()
+        #while True:
             
     def movePiece(self):
         pass
 
     def update(self, piece):
-        self.pieces.append(piece)
+        if (isinstance(piece.x, int)):
+            x = piece.x
+        else:
+            x = TranslateAlgebraicNotation(piece.x)
+        y = piece.y
+        self.tiles[y][x] = piece
 
     def applyFENposition(self, fen_string):
         x = 0
@@ -43,17 +57,17 @@ class Board:
 
     def initPieceInPosition(self, char, x, y):
         if char == "n":
-            p.Knight(x, y, char, self)
+            self.pieces.append(p.Knight(x, y, "b", self))
         elif char == "b":
-            p.Bishop(x, y, char, self)
+            self.pieces.append(p.Bishop(x, y, "b", self))
         elif char == "r":
-            p.Rook(x, y, char, self)
+            self.pieces.append(p.Rook(x, y, "b", self))
         elif char == "q":
-            p.Queen(x, y, char, self)
+            self.pieces.append(p.Queen(x, y, "b", self))
         elif char == "k":
-            p.King(x, y, char, self)
+            self.pieces.append(p.King(x, y, "b", self))
         elif char == "p":
-            p.Pawn(x, y, char, self)
+            self.pieces.append(p.Pawn(x, y, "b", self))
 
         
         

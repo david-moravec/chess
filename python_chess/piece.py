@@ -1,6 +1,11 @@
+from PIL import Image
+from PIL import ImageTk
+
 class Piece:
     def __init__(self, x, y, name, board):
         self.name  = name
+        self.killable = False
+        self.guarded = False
         self.movePiece(x, y, board)
 
     def movePiece(self, new_x, new_y, board):
@@ -16,6 +21,7 @@ class Piece:
         pass
 
 class Knight(Piece):
+    image_path = 'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -29,6 +35,7 @@ class Knight(Piece):
         return True
 
 class Bishop(Piece):
+    image_path = 'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -39,6 +46,7 @@ class Bishop(Piece):
         return True
         
 class Rook(Piece):
+    image_path = 'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -49,6 +57,7 @@ class Rook(Piece):
         return True
 
 class Queen(Piece):
+    image_path = 'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -59,6 +68,7 @@ class Queen(Piece):
         return True
     
 class King(Piece):
+    image_path = 'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -69,6 +79,7 @@ class King(Piece):
         return True
 
 class Pawn(Piece):
+    image_path = r'figures/white-knight.ppm'
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
