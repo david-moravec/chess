@@ -8,16 +8,24 @@ class Board:
         self.createBoard()
 
     def createBoard(self):
-        self.tiles = []
+        self.board = []
         self.pieces = []
 
         for i in range(ROWS):
             x = []
             for i in range(8):
                 x.append(".")
-            self.tiles.append(x)
+            self.board.append(x)
 
         self.startingSetup()
+
+    def placepiece(self, piece):
+        if (isinstance(piece.x, int)):
+            x = piece.x
+        else:
+            x = TranslateAlgebraicNotation(piece.x)
+        y = piece.y
+        self.board[y][x] = piece
 
     def draw_squares(self, win):
         win.fill(WHITE)
@@ -28,17 +36,8 @@ class Board:
     def startingSetup(self):
         self.applyFENposition("rnbkqbnr/pppppppp/8/8/8/8/pppppppp/rnbkqbnr")
 
-    def update(self, win):
-        self.draw_squares(win)
-        pygame.display.update()
-
-    def placepiece(self, piece):
-        if (isinstance(piece.x, int)):
-            x = piece.x
-        else:
-            x = TranslateAlgebraicNotation(piece.x)
-        y = piece.y
-        self.tiles[y][x] = piece
+    def getPiece(self):
+        return self.bo
 
     def applyFENposition(self, fen_string):
         x = 0
