@@ -7,14 +7,19 @@ class Board:
     def __init__(self):
         self.createBoard()
 
+    def getPiece(self, x, y):
+        print(self.board[x][y])
+        return self.board[x][y]
+
     def createBoard(self):
         self.board = []
         self.pieces = []
+        self.turn = WHITE
 
         for i in range(ROWS):
             x = []
             for i in range(8):
-                x.append(".")
+                x.append(0)
             self.board.append(x)
 
         self.startingSetup()
@@ -25,7 +30,7 @@ class Board:
         else:
             x = TranslateAlgebraicNotation(piece.x)
         y = piece.y
-        self.board[y][x] = piece
+        self.board[x][y] = piece
 
     def draw_squares(self, win):
         win.fill(WHITE)
@@ -36,8 +41,6 @@ class Board:
     def startingSetup(self):
         self.applyFENposition("rnbkqbnr/pppppppp/8/8/8/8/pppppppp/rnbkqbnr")
 
-    def getPiece(self):
-        return self.bo
 
     def applyFENposition(self, fen_string):
         x = 0
@@ -45,12 +48,12 @@ class Board:
         for line in fen_string.split("/"):
             for char in line:
                 try:
-                    x += int(char)
+                    y += int(char)
                 except ValueError:
                     self.initPieceInPosition(char, x, y)
-                    x+=1
-            x = 0
-            y+=1
+                    y+=1
+            y = 0
+            x+=1
 
     def initPieceInPosition(self, char, x, y):
         if char == "n":

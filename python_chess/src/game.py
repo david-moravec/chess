@@ -11,9 +11,21 @@ class Game:
     def _init(self):
         self.selected = None
         self.board = Board()
-        self.turn = WHITE
         self.valid_moves = {}
 
     def update(self):
         self.board.draw_squares(self.win)
         pygame.display.update()
+
+    def select(self, x, y):
+        if self.selected:
+            pass
+
+        piece = self.board.getPiece(x, y)
+        if piece != 0 and piece.team == self.board.turn:
+            self.selected = piece
+            self.selected.getValidMoves(self.board)
+            return True
+
+        return False
+            
