@@ -11,7 +11,7 @@ class Piece:
         self.x = x
         self.y = y
 
-    def validMoves(self, x, y):
+    def getValidMoves(self, board):
         pass
 
 class Knight(Piece):

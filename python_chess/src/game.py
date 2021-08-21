@@ -23,6 +23,7 @@ class Game:
 
         piece = self.board.getPiece(x, y)
         if piece != 0 and piece.team == self.board.turn:
+            print("kek")
             self.selected = piece
             self.selected.getValidMoves(self.board)
             return True

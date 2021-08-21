@@ -8,7 +8,7 @@ class Board:
         self.createBoard()
 
     def getPiece(self, x, y):
-        print(self.board[x][y])
+        #print(self.board[x][y])
         return self.board[x][y]
 
     def createBoard(self):
@@ -39,7 +39,7 @@ class Board:
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def startingSetup(self):
-        self.applyFENposition("rnbkqbnr/pppppppp/8/8/8/8/pppppppp/rnbkqbnr")
+        self.applyFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
 
     def applyFENposition(self, fen_string):
@@ -56,18 +56,23 @@ class Board:
             x+=1
 
     def initPieceInPosition(self, char, x, y):
-        if char == "n":
-            p.Knight(x, y, "b", self)
-        elif char == "b":
-            p.Bishop(x, y, "b", self)
-        elif char == "r":
-            p.Rook(x, y, "b", self)
-        elif char == "q":
-            p.Queen(x, y, "b", self)
-        elif char == "k":
-            p.King(x, y, "b", self)
-        elif char == "p":
-            p.Pawn(x, y, "b", self)
+        if char.isupper():
+            team = WHITE
+        else:
+            team = BLUE
+
+        if char == "n" or char == "N":
+            p.Knight(x, y, team, self)
+        elif char == "b" or char == "B":
+            p.Bishop(x, y, team, self)
+        elif char == "r" or char == "R":
+            p.Rook(x, y, team, self)
+        elif char == "q" or char == "Q":
+            p.Queen(x, y, team, self)
+        elif char == "k" or char == "K":
+            p.King(x, y, team, self)
+        elif char == "p" or char == "P":
+            p.Pawn(x, y, team, self)
 
         
         
