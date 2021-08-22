@@ -3,7 +3,7 @@ import enum
 
 import src.piece as p
 from src.piece import Piece
-from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS
+from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS, GREEN
 
 
 
@@ -36,11 +36,19 @@ class Board:
         y = piece.y
         self.board[y][x] = piece
 
-    def draw_squares(self, win):
+    def drawSquares(self, win):
         win.fill(WHITE)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+    def drawValidMoves(self, win):
+        for move in self.valid_moves:
+            x = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
+            y = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
+            pygame.draw.circle(win, GREEN, (x, y), 15)
+            print(x, y)
+        self.validMoves = []
 
     def draw(self, win):
         for row in self.board:

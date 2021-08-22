@@ -62,25 +62,26 @@ class Knight(Piece):
     def __repr__(self):
         return "n"
 
-    def validMoves(self, board):
-        valid_moves = []
+    def getValidMoves(self, board):
+        board.valid_moves = []
         potential_moves = []
         for d in range (-1, 2, 2):
-            potential_moves.append(tuple(self.x + 2, self.y + d))
-            potential_moves.append(tuple(self.x + d, self.y + 2))
+            potential_moves.append((self.x + 2, self.y + d))
+            potential_moves.append((self.x + d, self.y + 2))
         for d in range (-2, 4, 3):
-            potential_moves.append(tuple(self.x + 1, self.y + d))
-            potential_moves.append(tuple(self.x + d, self.y + 1))
+            potential_moves.append((self.x + 1, self.y + d))
+            potential_moves.append((self.x + d, self.y + 1))
 
         for move in potential_moves:
             x = move[0]
             y = move[1]
-            target_piece = board.getPiece(x, y)  
+            try:
+                target_piece = board.getPiece(x, y)  
+            except IndexError:
+                continue
 
             if target_piece != board.turn or target_piece == 0:
-                valid_moves.append(move)
-        return valid_moves
-
+                board.valid_moves.append(move)
 
 class Bishop(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)

@@ -14,8 +14,12 @@ class Game:
         self.valid_moves = {}
 
     def update(self):
-        self.board.draw_squares(self.win)
+        self.board.drawSquares(self.win)
         self.board.draw(self.win)
+        try:
+            self.board.drawValidMoves(self.win)
+        except:
+            pass
         pygame.display.update()
 
     def select(self, x, y):
