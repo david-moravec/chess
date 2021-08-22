@@ -22,23 +22,20 @@ class Game:
             pass
         pygame.display.update()
 
-    def select(self, x, y):
+    def select(self, row, col):
         if self.selected:
-            old_x = self.selected.x
-            old_y = self.selected.y
-            self.selected.move(x, y, self.board)
-            self.board.removePiece(old_x, old_y)
+            self.selected.move((row, col), self.board)
+
+            old_row = self.selected.row
+            old_col = self.selected.col
+            if row != old_row and col != old_col:
+                self.board.removePiece(old_row, old_col)
             self.board.changeTurns()
             self.selected = None
 
-        piece = self.board.getPiece(x, y)
-        if piece != 0 and piece.team == self.board.turn:
-            self.selected = piece
-            self.selected.getValidMoves(self.board)
-            return True
-
-        return False
-
-
-
-            
+        else:
+            piece = self.board.getPiece(row, col)
+            if piece != 0 and piece.team == self.board.turn:
+                self.selected = piece
+                print(piece)
+                self.selected.getValidMoves(self.board)

@@ -11,20 +11,20 @@ class Board:
     def __init__(self):
         self.createBoard()
 
-    def getPiece(self, x, y):
-        #print(self.board[x][y])
-        return self.board[x][y]
+    def getPiece(self, row, col):
+        #print(self.board[row][col])
+        return self.board[row][col]
 
     def createBoard(self):
         self.board = []
         self.pieces = []
         self.turn = WHITE
 
-        for i in range(ROWS):
-            x = []
-            for i in range(8):
-                x.append(0)
-            self.board.append(x)
+        for row in range(ROWS):
+            row = []
+            for col in range(COLS):
+                row.append(0)
+            self.board.append(row)
 
         self.startingSetup()
 
@@ -35,15 +35,12 @@ class Board:
             self.turn == WHITE
 
     def placePiece(self, piece):
-        if (isinstance(piece.x, int)):
-            x = piece.x
-        else:
-            x = TranslateAlgebraicNotation(piece.x)
-        y = piece.y
-        self.board[y][x] = piece
+        row = piece.row
+        col = piece.col
+        self.board[row][col] = piece
 
-    def removePiece(self, x, y):
-        self.board[y][x] = 0
+    def removePiece(self, row, col):
+        self.board[row][col] = 0
 
     def drawSquares(self, win):
         win.fill(WHITE)
@@ -53,10 +50,10 @@ class Board:
 
     def drawValidMoves(self, win):
         for move in self.valid_moves:
-            x = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
-            y = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
-            pygame.draw.circle(win, GREEN, (x, y), 15)
-        self.validMoves = []
+            row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
+            col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
+            pygame.draw.circle(win, GREEN, (row, col), 15)
+        self.valid_moves = []
 
     def draw(self, win):
         for row in self.board:
@@ -67,58 +64,58 @@ class Board:
                     else:
                         img = tile.image_black
 
-                    x = SQUARE_SIZE * tile.x + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
-                    y = SQUARE_SIZE * tile.y + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
-                    win.blit(img, (x, y))
+                    row = SQUARE_SIZE * tile.row + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                    col = SQUARE_SIZE * tile.col + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                    win.blit(img, (col, row))
                 else:
                     continue
 
 
     def startingSetup(self):
-        self.applyFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
+        self.applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
 
-    def applyFENposition(self, fen_string):
-        x = 0
-        y = 0
+    def applcolFENposition(self, fen_string):
+        row = 0
+        col = 0
         for line in fen_string.split("/"):
             for char in line:
                 try:
-                    y += int(char)
+                    col += int(char)
                 except ValueError:
-                    self.initPieceInPosition(char, x, y)
-                    y+=1
-            y = 0
-            x+=1
+                    self.initPieceInPosition(char, (row, col))
+                    col+=1
+            col = 0
+            row+=1
 
-    def initPieceInPosition(self, char, x, y):
+    def initPieceInPosition(self, char, dest):
         if char.isupper():
             team = WHITE
         else:
             team = BLUE
         if char == "n" or char == "N":
-            p.Knight(x, y, team, self)
+            p.Knight(dest, team, self)
         elif char == "b" or char == "B":
-            p.Bishop(x, y, team, self)
+            p.Bishop(dest, team, self)
         elif char == "r" or char == "R":
-            p.Rook(x, y, team, self)
+            p.Rook(dest, team, self)
         elif char == "q" or char == "Q":
-            p.Queen(x, y, team, self)
+            p.Queen(dest, team, self)
         elif char == "k" or char == "K":
-            p.King(x, y, team, self)
+            p.King(dest, team, self)
         elif char == "p" or char == "P":
-            p.Pawn(x, y, team, self)
+            p.Pawn(dest, team, self)
 
         
         
-def TranslateAlgebraicNotation(x):
+def TranslateAlgebraicNotation(row):
     try:
-        x = AlgebraicNotationDict[x]
-        return x.value
+        row = AlgebraicNotationDict[row]
+        return row.value
     except:
-        x = AlgebraicNotation(x)
+        row = AlgebraicNotation(row)
         for key in AlgebraicNotationDict.keys():
-            if x == AlgebraicNotationDict[key]:
+            if row == AlgebraicNotationDict[key]:
                 return key
 
 class AlgebraicNotation(enum.Enum):

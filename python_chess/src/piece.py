@@ -36,18 +36,24 @@ for img in w:
 '''
 
 class Piece:
-    def __init__(self, x, y, team, board):
+    def __init__(self, dest, team, board):
         self.team  = team
-        self.move(x, y, board)
+        self.move(dest, board)
 
-    def move(self, new_x, new_y, board):
-        self.makeMove(new_x, new_y)
+    def move(self, dest, board):
+        try: 
+            board.valid_moves
+            if dest in board.valid_moves:
+                self.makeMove(dest)
+                board.valid_moves = []
+        except AttributeError:
+                self.makeMove(dest)
+
         board.placePiece(self)
-        board.valid_moves = []
 
-    def makeMove(self, x, y):
-        self.x = x
-        self.y = y
+    def makeMove(self, dest):
+        self.row = dest[0]
+        self.col = dest[1]
 
     def getValidMoves(self, board):
         pass
@@ -56,9 +62,8 @@ class Knight(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "n"
@@ -67,17 +72,17 @@ class Knight(Piece):
         board.valid_moves = []
         potential_moves = []
         for d in range (-1, 2, 2):
-            potential_moves.append((self.x + 2, self.y + d))
-            potential_moves.append((self.x + d, self.y + 2))
+            potential_moves.append((self.row + 2, self.col + d))
+            potential_moves.append((self.row + d, self.col + 2))
         for d in range (-2, 4, 3):
-            potential_moves.append((self.x + 1, self.y + d))
-            potential_moves.append((self.x + d, self.y + 1))
+            potential_moves.append((self.row + 1, self.col + d))
+            potential_moves.append((self.row + d, self.col + 1))
 
         for move in potential_moves:
-            x = move[0]
-            y = move[1]
+            row = move[0]
+            col = move[1]
             try:
-                target_piece = board.getPiece(x, y)  
+                target_piece = board.getPiece(row, col)  
             except IndexError:
                 continue
 
@@ -88,63 +93,70 @@ class Bishop(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "b"
 
-    def checkMove(self, x, y):
+    def checkMove(self, row, col):
         return True
         
 class Rook(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "r"
 
-    def checkMove(self, x, y):
+    def checkMove(self, row, col):
+        return True
+        Piece.__init__(self, row, col, team, board)
+
+    def __repr__(self):
+        return "r"
+
+    def checkMove(self, row, col):
         return True
 
 class Queen(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "q"
 
-    def checkMove(self, x, y):
-        return True
+    def checkmove(self, row, col):
+        return true
     
 class King(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "k"
 
-    def checkMove(self, x, y):
+    def checkMove(self, row, col):
         return True
 
 class Pawn(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, x, y, team, board):
-        Piece.__init__(self, x, y, team, board)
+    def __init__(self, dest, team, board):
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "p"
 
-    def checkMove(self, x, y):
+    def checkMove(self, row, col):
         return True
