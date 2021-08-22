@@ -13,22 +13,6 @@ def get_row_col_from_mouse(pos):
     col = x // SQUARE_SIZE
     return row, col
 
-#def main():
-#
-#    game = Game(WIN)
-#    game.update()
-    
-#
-#    run = True
-#    while run:
-#        for event in pygame.event.get():
-#            if event.type == pygame.QUIT:
-#                run = False
-#
-#        game.update()
-#
-#    pygame.quit()
-
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -50,6 +34,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
                 game.select(row, col)
+
         game.update()
 
 if __name__ == "__main__":

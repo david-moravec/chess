@@ -24,7 +24,12 @@ class Game:
 
     def select(self, x, y):
         if self.selected:
-            pass
+            old_x = self.selected.x
+            old_y = self.selected.y
+            self.selected.move(x, y, self.board)
+            self.board.removePiece(old_x, old_y)
+            self.board.changeTurns()
+            self.selected = None
 
         piece = self.board.getPiece(x, y)
         if piece != 0 and piece.team == self.board.turn:

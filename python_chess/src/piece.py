@@ -38,11 +38,12 @@ for img in w:
 class Piece:
     def __init__(self, x, y, team, board):
         self.team  = team
-        self.movePiece(x, y, board)
+        self.move(x, y, board)
 
-    def movePiece(self, new_x, new_y, board):
+    def move(self, new_x, new_y, board):
         self.makeMove(new_x, new_y)
-        board.placepiece(self)
+        board.placePiece(self)
+        board.valid_moves = []
 
     def makeMove(self, x, y):
         self.x = x

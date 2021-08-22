@@ -28,13 +28,22 @@ class Board:
 
         self.startingSetup()
 
-    def placepiece(self, piece):
+    def changeTurns(self):
+        if self.turn == WHITE:
+            self.turn == BLUE
+        else:
+            self.turn == WHITE
+
+    def placePiece(self, piece):
         if (isinstance(piece.x, int)):
             x = piece.x
         else:
             x = TranslateAlgebraicNotation(piece.x)
         y = piece.y
         self.board[y][x] = piece
+
+    def removePiece(self, x, y):
+        self.board[y][x] = 0
 
     def drawSquares(self, win):
         win.fill(WHITE)
@@ -47,7 +56,6 @@ class Board:
             x = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             y = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
             pygame.draw.circle(win, GREEN, (x, y), 15)
-            print(x, y)
         self.validMoves = []
 
     def draw(self, win):
@@ -88,7 +96,6 @@ class Board:
             team = WHITE
         else:
             team = BLUE
-
         if char == "n" or char == "N":
             p.Knight(x, y, team, self)
         elif char == "b" or char == "B":
