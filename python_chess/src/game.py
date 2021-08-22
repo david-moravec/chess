@@ -15,6 +15,7 @@ class Game:
 
     def update(self):
         self.board.draw_squares(self.win)
+        self.board.draw(self.win)
         pygame.display.update()
 
     def select(self, x, y):
@@ -23,10 +24,12 @@ class Game:
 
         piece = self.board.getPiece(x, y)
         if piece != 0 and piece.team == self.board.turn:
-            print("kek")
             self.selected = piece
             self.selected.getValidMoves(self.board)
             return True
 
         return False
+
+
+
             

@@ -1,7 +1,11 @@
 import pygame
 import enum
+
 import src.piece as p
-from src.constants import SQUARE_SIZE, WHITE, BLUE, ROWS, COLS
+from src.piece import Piece
+from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS
+
+
 
 class Board:
     def __init__(self):
@@ -30,13 +34,29 @@ class Board:
         else:
             x = TranslateAlgebraicNotation(piece.x)
         y = piece.y
-        self.board[x][y] = piece
+        self.board[y][x] = piece
 
     def draw_squares(self, win):
         win.fill(WHITE)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+    def draw(self, win):
+        for row in self.board:
+            for tile in row:
+                if isinstance(tile, Piece):
+                    if tile.team == WHITE:
+                        img = tile.image_white
+                    else:
+                        img = tile.image_black
+
+                    x = SQUARE_SIZE * tile.x + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                    y = SQUARE_SIZE * tile.y + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                    win.blit(img, (x, y))
+                else:
+                    continue
+
 
     def startingSetup(self):
         self.applyFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")

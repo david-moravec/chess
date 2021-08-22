@@ -1,3 +1,40 @@
+import pygame
+import os
+
+from src.constants import SCALE_FACTOR
+
+knight_black = pygame.image.load("figures/black-knight.png")
+knight_white = pygame.image.load("figures/white-knight.png")
+
+
+'''
+b_bishop = pygame.image.load(os.path.join("img", "black_bishop.png"))
+b_king = pygame.image.load(os.path.join("img", "black_king.png"))
+b_knight = pygame.image.load(os.path.join("img", "black_knight.png"))
+b_pawn = pygame.image.load(os.path.join("img", "black_pawn.png"))
+b_queen = pygame.image.load(os.path.join("img", "black_queen.png"))
+b_rook = pygame.image.load(os.path.join("img", "black_rook.png"))
+
+w_bishop = pygame.image.load(os.path.join("img", "white_bishop.png"))
+w_king = pygame.image.load(os.path.join("img", "white_king.png"))
+w_knight = pygame.image.load(os.path.join("img", "white_knight.png"))
+w_pawn = pygame.image.load(os.path.join("img", "white_pawn.png"))
+w_queen = pygame.image.load(os.path.join("img", "white_queen.png"))
+w_rook = pygame.image.load(os.path.join("img", "white_rook.png"))
+
+b = [b_bishop, b_king, b_knight, b_pawn, b_queen, b_rook]
+w = [w_bishop, w_king, w_knight, w_pawn, w_queen, w_rook]
+
+B = []
+W = []
+
+for img in b:
+    B.append(pygame.transform.scale(img, (55, 55)))
+
+for img in w:
+    W.append(pygame.transform.scale(img, (55, 55)))
+'''
+
 class Piece:
     def __init__(self, x, y, team, board):
         self.team  = team
@@ -15,6 +52,10 @@ class Piece:
         pass
 
 class Knight(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -42,6 +83,9 @@ class Knight(Piece):
 
 
 class Bishop(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -52,6 +96,9 @@ class Bishop(Piece):
         return True
         
 class Rook(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -62,6 +109,9 @@ class Rook(Piece):
         return True
 
 class Queen(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -72,6 +122,9 @@ class Queen(Piece):
         return True
     
 class King(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
@@ -82,6 +135,9 @@ class King(Piece):
         return True
 
 class Pawn(Piece):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, x, y, team, board):
         Piece.__init__(self, x, y, team, board)
 
