@@ -86,7 +86,7 @@ class Knight(Piece):
             except IndexError:
                 continue
 
-            if target_piece != board.turn or target_piece == 0:
+            if target_piece.team == board.turn and target_piece != 0:
                 board.valid_moves.append(move)
 
 class Bishop(Piece):

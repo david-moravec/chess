@@ -30,9 +30,9 @@ class Board:
 
     def changeTurns(self):
         if self.turn == WHITE:
-            self.turn == BLUE
+            self.turn = BLUE
         else:
-            self.turn == WHITE
+            self.turn = WHITE
 
     def placePiece(self, piece):
         row = piece.row
@@ -54,6 +54,7 @@ class Board:
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
             pygame.draw.circle(win, GREEN, (row, col), 15)
         self.valid_moves = []
+        print("eke")
 
     def draw(self, win):
         for row in self.board:
@@ -72,7 +73,8 @@ class Board:
 
 
     def startingSetup(self):
-        self.applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
+        self.applcolFENposition("4K3/8/8/8/8/8/8/3k4")
+        #self.applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
 
     def applcolFENposition(self, fen_string):

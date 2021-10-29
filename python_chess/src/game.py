@@ -37,5 +37,4 @@ class Game:
             piece = self.board.getPiece(row, col)
             if piece != 0 and piece.team == self.board.turn:
                 self.selected = piece
-                print(piece)
                 self.selected.getValidMoves(self.board)
