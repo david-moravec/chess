@@ -27,6 +27,7 @@ class Board:
             self.board.append(row)
 
         self.startingSetup()
+        self.printBoard()
 
     def changeTurns(self):
         if self.turn == WHITE:
@@ -48,13 +49,13 @@ class Board:
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-    def drawValidMoves(self, win):
+    def drawValidMoves(self, piece, win):
+        #valid_moves = 
         for move in self.valid_moves:
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
             pygame.draw.circle(win, GREEN, (row, col), 15)
         self.valid_moves = []
-        print("eke")
 
     def draw(self, win):
         for row in self.board:
@@ -73,7 +74,8 @@ class Board:
 
 
     def startingSetup(self):
-        self.applcolFENposition("4K3/8/8/8/8/8/8/3k4")
+        #self.applcolFENposition("1N3/5/5/5/1n3")
+        self.applcolFENposition("4N3/8/8/8/8/8/8/3n4")
         #self.applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
 
@@ -107,6 +109,11 @@ class Board:
             p.King(dest, team, self)
         elif char == "p" or char == "P":
             p.Pawn(dest, team, self)
+
+    def printBoard(self):
+        for row in self.board:
+            for col in row:
+                break
 
         
         

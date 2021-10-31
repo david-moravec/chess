@@ -1,5 +1,6 @@
 import pygame
 import os
+from abc import ABC, abstractmethod
 
 from src.constants import SCALE_FACTOR
 
@@ -35,7 +36,7 @@ for img in w:
     W.append(pygame.transform.scale(img, (55, 55)))
 '''
 
-class Piece:
+class Piece(ABC):
     def __init__(self, dest, team, board):
         self.team  = team
         self.move(dest, board)
@@ -46,6 +47,8 @@ class Piece:
             if dest in board.valid_moves:
                 self.makeMove(dest)
                 board.valid_moves = []
+            else:
+                pass
         except AttributeError:
                 self.makeMove(dest)
 
@@ -55,6 +58,7 @@ class Piece:
         self.row = dest[0]
         self.col = dest[1]
 
+    @abstractmethod
     def getValidMoves(self, board):
         pass
 
@@ -69,6 +73,7 @@ class Knight(Piece):
         return "n"
 
     def getValidMoves(self, board):
+        #print("getting valid moves")
         board.valid_moves = []
         potential_moves = []
         for d in range (-1, 2, 2):
@@ -86,8 +91,8 @@ class Knight(Piece):
             except IndexError:
                 continue
 
-            if target_piece.team == board.turn and target_piece != 0:
-                board.valid_moves.append(move)
+            #if target_piece.team == board.turn and target_piece != 0:
+            board.valid_moves.append(move)
 
 class Bishop(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
@@ -101,6 +106,9 @@ class Bishop(Piece):
 
     def checkMove(self, row, col):
         return True
+
+    def getValidMoves(self, board):
+        pass
         
 class Rook(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
@@ -121,6 +129,9 @@ class Rook(Piece):
 
     def checkMove(self, row, col):
         return True
+    
+    def getValidMoves(self, board):
+        pass
 
 class Queen(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
@@ -134,6 +145,9 @@ class Queen(Piece):
 
     def checkmove(self, row, col):
         return true
+
+    def getValidMoves(self, board):
+        pass
     
 class King(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
@@ -148,6 +162,9 @@ class King(Piece):
     def checkMove(self, row, col):
         return True
 
+    def getValidMoves(self, board):
+        pass
+
 class Pawn(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
@@ -160,3 +177,6 @@ class Pawn(Piece):
 
     def checkMove(self, row, col):
         return True
+
+    def getValidMoves(self, board):
+        pass

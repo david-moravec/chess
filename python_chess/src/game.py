@@ -23,6 +23,7 @@ class Game:
         pygame.display.update()
 
     def select(self, row, col):
+        #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
         if self.selected:
             self.selected.move((row, col), self.board)
 
@@ -33,8 +34,9 @@ class Game:
             self.board.changeTurns()
             self.selected = None
 
+        #if we have no piece selected, select current piece
         else:
             piece = self.board.getPiece(row, col)
             if piece != 0 and piece.team == self.board.turn:
                 self.selected = piece
-                self.selected.getValidMoves(self.board)
+                self.selected.getValidMoves(self.board) #gets the valid moves of a piece

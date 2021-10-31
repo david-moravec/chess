@@ -34,8 +34,8 @@ def main():
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
                 game.select(row, col)
+                game.update()
 
-        game.update()
 
 if __name__ == "__main__":
     main()
