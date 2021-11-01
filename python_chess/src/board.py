@@ -49,8 +49,7 @@ class Board:
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-    def drawValidMoves(self, piece, win):
-        #valid_moves = 
+    def drawValidMoves(self, win):
         for move in self.valid_moves:
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2

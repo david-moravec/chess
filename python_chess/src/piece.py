@@ -76,12 +76,26 @@ class Knight(Piece):
         #print("getting valid moves")
         board.valid_moves = []
         potential_moves = []
+
+        potential_moves.append((self.col + 2, self.row + 1))
+        potential_moves.append((self.col + 1, self.row + 2))
+
+        potential_moves.append((self.col - 2, self.row + 1))
+        potential_moves.append((self.col - 1, self.row + 2))
+
+        potential_moves.append((self.col + 2, self.row - 1))
+        potential_moves.append((self.col + 1, self.row - 2))
+        
+        potential_moves.append((self.col + 2, self.row - 1))
+        potential_moves.append((self.col + 1, self.row - 2))
+        '''
         for d in range (-1, 2, 2):
             potential_moves.append((self.row + 2, self.col + d))
             potential_moves.append((self.row + d, self.col + 2))
         for d in range (-2, 4, 3):
             potential_moves.append((self.row + 1, self.col + d))
             potential_moves.append((self.row + d, self.col + 1))
+        '''
 
         for move in potential_moves:
             row = move[0]
@@ -93,6 +107,7 @@ class Knight(Piece):
 
             #if target_piece.team == board.turn and target_piece != 0:
             board.valid_moves.append(move)
+        print(board.valid_moves)
 
 class Bishop(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
