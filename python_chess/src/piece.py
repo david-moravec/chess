@@ -45,6 +45,7 @@ class Piece(ABC):
         self.team  = team
         self.old_dest = (0,0)
         self.move(dest, board)
+        self.moved = False
 
     def move(self, dest, board):
         # if we have the first round of chess we dont have any valid moves to look for 
@@ -54,9 +55,12 @@ class Piece(ABC):
             
         else:
             try: 
-                print(board.valid_moves, dest)
+                if DEBUG:
+                    print(board.valid_moves, dest)
+
                 if dest in board.valid_moves:
                     self.makeMove(dest)
+                    self.moved = True
                     board.resetValidMoves()
                 else:
                     pass
@@ -79,7 +83,18 @@ class Piece(ABC):
 
         if DEBUG:
             print(self.makeMove.__name__, "movingPiece to", dest[0], dest[1])
+    def resetMoved(self):
+        self.moved = False
 
+    def didMove(self, dest):
+        print(dest, self.getOldDest())
+        return dest != self.getOldDest()
+
+    def getDest(self):
+        return (self.row, self.col)
+
+    def getOldDest(self):
+        return self.old_dest
 
     @abstractmethod
     def getValidMoves(self, board):
@@ -102,7 +117,7 @@ class Knight(Piece):
         return "n"
 
     def getValidMoves(self, board):
-        print(self.row, self.col)
+        #print(self.row, self.col)
         board.valid_moves = []
         potential_moves = []
 
@@ -141,7 +156,7 @@ class Knight(Piece):
 
             if DEBUG:
                 print(self.getValidMoves.__name__, valid_moves)
-        print(board.valid_moves)
+        #print(board.valid_moves)
 
 
 class Bishop(Piece):

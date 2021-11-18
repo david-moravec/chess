@@ -5,6 +5,8 @@ from src.game import Game
 
 import inspect
 
+DEBUG = False
+
 FPS = 60
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess")
@@ -13,7 +15,8 @@ def get_row_col_from_mouse(pos):
     x, y = pos
     col = x // SQUARE_SIZE
     row = y // SQUARE_SIZE
-    print(row, col)
+    if DEBUG:
+        print(row, col)
     return (row, col)
 
 def main():

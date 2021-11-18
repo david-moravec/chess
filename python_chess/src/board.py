@@ -55,7 +55,8 @@ class Board:
     def removePiece(self, old_dest, new_dest):
         if isinstance(self.getPiece(new_dest), Piece):
             self.board[old_dest[0]][old_dest[1]] = 0
-            print("removing Piece on", old_dest)
+            if DEBUG:
+                print("removing Piece on", old_dest)
 
     def drawSquares(self, win):
         win.fill(WHITE)
@@ -65,7 +66,7 @@ class Board:
 
     def drawValidMoves(self, win):
         for move in self.valid_moves:
-            print(move)
+            #print(move)
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
             pygame.draw.circle(win, GREEN, (col, row ), 15)

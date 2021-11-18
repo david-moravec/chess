@@ -27,8 +27,9 @@ class Game:
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
         if self.selected:
             self.selected.move(dest, self.board)
-
-            self.board.changeTurns()
+            if self.selected.moved:
+                self.board.changeTurns()
+                self.selected.resetMoved()
             self.selected = None
 
         #if we have no piece selected, select current piece
@@ -38,6 +39,7 @@ class Game:
                 self.selected = piece
                 self.selected.old_dest = dest
                 self.selected.getValidMoves(self.board) #gets the valid moves of a piece
+
             if DEBUG:
                 print(self.select.__name__, self.selected)
                 print(self.select.__name__, self.board.valid_moves)
