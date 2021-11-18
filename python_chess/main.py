@@ -3,6 +3,8 @@ import pygame
 from src.constants import HEIGHT, WIDTH, SQUARE_SIZE
 from src.game import Game
 
+import inspect
+
 FPS = 60
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess")
@@ -33,8 +35,10 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
+                #print(row,col)
                 game.select(row, col)
                 game.update()
+                game.board.printBoard()
 
 
 if __name__ == "__main__":

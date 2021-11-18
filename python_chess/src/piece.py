@@ -2,7 +2,7 @@ import pygame
 import os
 from abc import ABC, abstractmethod
 
-from src.constants import SCALE_FACTOR
+from src.constants import SCALE_FACTOR, BLUE, WHITE, DEBUG
 
 knight_black = pygame.image.load("figures/black-knight.png")
 knight_white = pygame.image.load("figures/white-knight.png")
@@ -37,6 +37,9 @@ for img in w:
 '''
 
 class Piece(ABC):
+    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+
     def __init__(self, dest, team, board):
         self.team  = team
         self.move(dest, board)
@@ -48,6 +51,7 @@ class Piece(ABC):
                 self.makeMove(dest)
                 board.valid_moves = []
             else:
+                self.makeMove(dest)
                 pass
         except AttributeError:
                 self.makeMove(dest)
@@ -58,9 +62,18 @@ class Piece(ABC):
         self.row = dest[0]
         self.col = dest[1]
 
+        if DEBUG:
+            print(self.makeMove.__name__, "movingPiece to", dest[0], dest[1])
+
     @abstractmethod
     def getValidMoves(self, board):
         pass
+
+    def getImage(self):
+        if self.team == BLUE:
+            return self.image_black
+        elif self.team == WHITE:
+            return self.image_white
 
 class Knight(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
@@ -107,7 +120,8 @@ class Knight(Piece):
 
             #if target_piece.team == board.turn and target_piece != 0:
             board.valid_moves.append(move)
-        print(board.valid_moves)
+        #print(board.valid_moves)
+
 
 class Bishop(Piece):
     image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)

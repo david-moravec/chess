@@ -1,7 +1,8 @@
 import pygame
 from src.board import Board
-from src.constants import WHITE
+from src.constants import WHITE, BLUE, DEBUG
 
+DEBUG = False
 
 class Game:
     def __init__(self, win):
@@ -40,3 +41,5 @@ class Game:
             if piece != 0 and piece.team == self.board.turn:
                 self.selected = piece
                 self.selected.getValidMoves(self.board) #gets the valid moves of a piece
+            if DEBUG:
+                print(self.select.__name__, self.selected)

@@ -3,9 +3,9 @@ import enum
 
 import src.piece as p
 from src.piece import Piece
-from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS, GREEN
+from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS, GREEN, DEBUG
 
-
+DEBUG = False
 
 class Board:
     def __init__(self):
@@ -27,7 +27,7 @@ class Board:
             self.board.append(row)
 
         self.startingSetup()
-        self.printBoard()
+        #self.printBoard()
 
     def changeTurns(self):
         if self.turn == WHITE:
@@ -39,6 +39,8 @@ class Board:
         row = piece.row
         col = piece.col
         self.board[row][col] = piece
+        if DEBUG:
+            print(self.placePiece.__name__, row, col, self.board[row][col])
 
     def removePiece(self, row, col):
         self.board[row][col] = 0
@@ -59,15 +61,13 @@ class Board:
     def draw(self, win):
         for row in self.board:
             for tile in row:
+                #if there is piece placed on tile so 
                 if isinstance(tile, Piece):
-                    if tile.team == WHITE:
-                        img = tile.image_white
-                    else:
-                        img = tile.image_black
+                    piece = tile
+                    row = SQUARE_SIZE * piece.row + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                    col = SQUARE_SIZE * piece.col + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
 
-                    row = SQUARE_SIZE * tile.row + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
-                    col = SQUARE_SIZE * tile.col + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
-                    win.blit(img, (col, row))
+                    win.blit(piece.getImage(), (col, row))
                 else:
                     continue
 
@@ -111,8 +111,9 @@ class Board:
 
     def printBoard(self):
         for row in self.board:
-            for col in row:
-                break
+            print(row)
+        print("\n")    
+
 
         
         

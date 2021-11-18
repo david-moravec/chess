@@ -83,11 +83,11 @@ class GameBoard(tk.Frame):
 
     def addPiece(self, piece, root):
         '''Add a piece to the playing board'''
-        root.image = image = tk.PhotoImage(file=r'figures/white-knight.ppm')
+        #root.image = image = tk.PhotoImage(file=r'figures/white-knight.ppm')
         x = piece.x * 100 - 50
         y = piece.y * 100 - 50
         name = piece.name
-        self.canvas.create_image(x,y, image=image)
+        #self.canvas.create_image(x,y, image=image)
         self.placepiece(name, y, x)
 
     def update(self, pieces):
