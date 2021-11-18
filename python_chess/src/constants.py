@@ -6,4 +6,4 @@ BLUE = (100,149,237)
 GREEN = (0, 128, 0)
 ROWS = 8
 COLS = 8
-DEBUG = True
+DEBUG = False

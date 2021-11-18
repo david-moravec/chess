@@ -39,7 +39,7 @@ class Example(tk.Frame):
 
     def drag_start(self, event):
         """Begining drag of an object"""
-        # record the item and its location
+        # record the item and its colation
         self._drag_data["item"] = self.canvas.find_closest(event.x, event.y)[0]
         self._drag_data["x"] = event.x
         self._drag_data["y"] = event.y

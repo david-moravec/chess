@@ -3,10 +3,10 @@ from PIL import Image
 from PIL import ImageTk
 
 class GameBoard(tk.Frame):
-    def __init__(self, parent, rows=8, columns=8, size=100, color1="white", color2="blue"):
+    def __init__(self, parent, cols=8, columns=8, size=100, color1="white", color2="blue"):
         '''size is the size of a square, in pixels'''
 
-        self.rows = rows
+        self.cols = cols
         self.columns = columns
         self.size = size
         self.color1 = color1
@@ -14,7 +14,7 @@ class GameBoard(tk.Frame):
         self.pieces = {}
 
         canvas_width = columns * size
-        canvas_height = rows * size
+        canvas_height = cols * size
 
         tk.Frame.__init__(self, parent)
         self.canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
@@ -53,7 +53,7 @@ class GameBoard(tk.Frame):
 
     def drag_start(self, event):
         """Begining drag of an object"""
-        # record the item and its location
+        # record the item and its colation
         self._drag_data["item"] = self.canvas.find_closest(event.x, event.y)[0]
         self._drag_data["x"] = event.x
         self._drag_data["y"] = event.y
@@ -94,11 +94,11 @@ class GameBoard(tk.Frame):
         for piece in pieces:
             self.placepiece(name , piece.y, piece.x)
 
-    def placepiece(self, name, row, column):
-        '''Place a piece at the given row/column'''
-        #self.pieces[name] = (row, column)
+    def placepiece(self, name, col, column):
+        '''Place a piece at the given col/column'''
+        #self.pieces[name] = (col, column)
         x0 = (column * self.size) + int(self.size/2)
-        y0 = (row * self.size) + int(self.size/2)
+        y0 = (col * self.size) + int(self.size/2)
         self.canvas.coords(name, x0, y0)
 
     #def create_token(self, x, y, color):
@@ -116,15 +116,15 @@ class GameBoard(tk.Frame):
     def refresh(self, event):
         '''Redraw the board, possibly in response to window being resized'''
         xsize = int((event.width-1) / self.columns)
-        ysize = int((event.height-1) / self.rows)
+        ysize = int((event.height-1) / self.cols)
         self.size = min(xsize, ysize)
         self.canvas.delete("square")
         color = self.color2
-        for row in range(self.rows):
+        for col in range(self.cols):
             color = self.color1 if color == self.color2 else self.color2
             for col in range(self.columns):
                 x1 = (col * self.size)
-                y1 = (row * self.size)
+                y1 = (col * self.size)
                 x2 = x1 + self.size
                 y2 = y1 + self.size
                 self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=color, tags="square")

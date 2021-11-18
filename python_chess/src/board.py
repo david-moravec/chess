@@ -5,9 +5,11 @@ import src.piece as p
 from src.piece import Piece
 from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS, GREEN, DEBUG
 
-DEBUG = False
+#DEBUG = False
 
 class Board:
+    move = 0
+
     def __init__(self):
         self.createBoard()
 
@@ -29,6 +31,7 @@ class Board:
             self.board.append(row)
 
         self.startingSetup()
+        self.move += 1
         #self.printBoard()
 
     def changeTurns(self):
@@ -36,16 +39,23 @@ class Board:
             self.turn = BLUE
         else:
             self.turn = WHITE
+        self.move += 1
 
     def placePiece(self, piece):
         row = piece.row
         col = piece.col
         self.board[row][col] = piece
-        if DEBUG:
-            print(self.placePiece.__name__, row, col, self.board[row][col])
+        #print("placing piece on", (row, col))
+        #self.printBoard()
+        #if DEBUG:
+            #print(self.placePiece.__name__, row, col, self.board[row][col])
+    def resetValidMoves(self):
+        self.valid_moves = []
 
-    def removePiece(self, dest):
-        self.board[dest[0]][dest[1]] = 0
+    def removePiece(self, old_dest, new_dest):
+        if isinstance(self.getPiece(new_dest), Piece):
+            self.board[old_dest[0]][old_dest[1]] = 0
+            print("removing Piece on", old_dest)
 
     def drawSquares(self, win):
         win.fill(WHITE)
@@ -55,10 +65,11 @@ class Board:
 
     def drawValidMoves(self, win):
         for move in self.valid_moves:
+            print(move)
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
-            pygame.draw.circle(win, GREEN, (row, col), 15)
-        self.valid_moves = []
+            pygame.draw.circle(win, GREEN, (col, row ), 15)
+        #self.valid_moves = []
 
     def draw(self, win):
         for row in self.board:

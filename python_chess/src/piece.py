@@ -7,6 +7,7 @@ from src.constants import SCALE_FACTOR, BLUE, WHITE, DEBUG
 knight_black = pygame.image.load("figures/black-knight.png")
 knight_white = pygame.image.load("figures/white-knight.png")
 
+DEBUG = False
 
 '''
 b_bishop = pygame.image.load(os.path.join("img", "black_bishop.png"))
@@ -42,21 +43,34 @@ class Piece(ABC):
 
     def __init__(self, dest, team, board):
         self.team  = team
+        self.old_dest = (0,0)
         self.move(dest, board)
-        self.olf_dest = (0,0)
 
     def move(self, dest, board):
-        try: 
-            board.valid_moves
-            if dest in board.valid_moves:
-                self.makeMove(dest)
-                board.valid_moves = []
-            else:
-                self.makeMove(dest)
-                pass
-        except AttributeError:
-                self.makeMove(dest)
+        # if we have the first round of chess we dont have any valid moves to look for 
+        #import pdb; pdb.set_trace()
+        if board.move == 0:
+            self.makeMove(dest)
+            
+        else:
+            try: 
+                print(board.valid_moves, dest)
+                if dest in board.valid_moves:
+                    self.makeMove(dest)
+                    board.resetValidMoves()
+                else:
+                    pass
+                if DEBUG:
+                    print(board.valid_moves)
+            except AttributeError:
+                    pass
+                    #self.makeMove(dest)
+
         board.placePiece(self)
+        # remove piece from old colation
+        if not self.move == 0:
+            board.removePiece(self.old_dest, dest)
+        board.valid_moves = []
 
 
     def makeMove(self, dest):
@@ -65,6 +79,7 @@ class Piece(ABC):
 
         if DEBUG:
             print(self.makeMove.__name__, "movingPiece to", dest[0], dest[1])
+
 
     @abstractmethod
     def getValidMoves(self, board):
@@ -87,42 +102,46 @@ class Knight(Piece):
         return "n"
 
     def getValidMoves(self, board):
-        #print("getting valid moves")
+        print(self.row, self.col)
         board.valid_moves = []
         potential_moves = []
 
-        potential_moves.append((self.col + 2, self.row + 1))
-        potential_moves.append((self.col + 1, self.row + 2))
+        potential_moves.append((self.row + 2, self.col + 1))
+        potential_moves.append((self.row + 1, self.col + 2))
 
-        potential_moves.append((self.col - 2, self.row + 1))
-        potential_moves.append((self.col - 1, self.row + 2))
+        potential_moves.append((self.row - 2, self.col + 1))
+        potential_moves.append((self.row - 1, self.col + 2))
 
-        potential_moves.append((self.col + 2, self.row - 1))
-        potential_moves.append((self.col + 1, self.row - 2))
+        potential_moves.append((self.row + 2, self.col - 1))
+        potential_moves.append((self.row + 1, self.col - 2))
         
-        potential_moves.append((self.col + 2, self.row - 1))
-        potential_moves.append((self.col + 1, self.row - 2))
+        potential_moves.append((self.row - 2, self.col - 1))
+        potential_moves.append((self.row - 1, self.col - 2))
         '''
         for d in range (-1, 2, 2):
-            potential_moves.append((self.row + 2, self.col + d))
-            potential_moves.append((self.row + d, self.col + 2))
+            potential_moves.append((self.col + 2, self.col + d))
+            potential_moves.append((self.col + d, self.col + 2))
         for d in range (-2, 4, 3):
-            potential_moves.append((self.row + 1, self.col + d))
-            potential_moves.append((self.row + d, self.col + 1))
+            potential_moves.append((self.col + 1, self.col + d))
+            potential_moves.append((self.col + d, self.col + 1))
         '''
 
         for move in potential_moves:
-            row = move[0]
-            col = move[1]
-            dest = (row, col)
+            if move[0] > 7 or move[0] < 0 or move[1] > 7 or move[1] < 0:
+                continue
+
+            dest = move
             try:
                 target_piece = board.getPiece(dest)  
             except IndexError:
                 continue
 
             #if target_piece.team == board.turn and target_piece != 0:
-            board.valid_moves.append(move)
-        #print(board.valid_moves)
+            board.valid_moves.append(dest)
+
+            if DEBUG:
+                print(self.getValidMoves.__name__, valid_moves)
+        print(board.valid_moves)
 
 
 class Bishop(Piece):
@@ -135,7 +154,7 @@ class Bishop(Piece):
     def __repr__(self):
         return "b"
 
-    def checkMove(self, row, col):
+    def checkMove(self, dest):
         return True
 
     def getValidMoves(self, board):
@@ -151,14 +170,14 @@ class Rook(Piece):
     def __repr__(self):
         return "r"
 
-    def checkMove(self, row, col):
+    def checkMove(self, dest):
         return True
-        Piece.__init__(self, row, col, team, board)
+        Piece.__init__(self, dest, team, board)
 
     def __repr__(self):
         return "r"
 
-    def checkMove(self, row, col):
+    def checkMove(self, dest):
         return True
     
     def getValidMoves(self, board):
@@ -174,7 +193,7 @@ class Queen(Piece):
     def __repr__(self):
         return "q"
 
-    def checkmove(self, row, col):
+    def checkmove(self, dest):
         return true
 
     def getValidMoves(self, board):
@@ -190,7 +209,7 @@ class King(Piece):
     def __repr__(self):
         return "k"
 
-    def checkMove(self, row, col):
+    def checkMove(self, dest):
         return True
 
     def getValidMoves(self, board):
@@ -206,7 +225,7 @@ class Pawn(Piece):
     def __repr__(self):
         return "p"
 
-    def checkMove(self, row, col):
+    def checkMove(self, dest):
         return True
 
     def getValidMoves(self, board):

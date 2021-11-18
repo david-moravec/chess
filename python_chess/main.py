@@ -11,9 +11,10 @@ pygame.display.set_caption("Chess")
 
 def get_row_col_from_mouse(pos):
     x, y = pos
-    row = y // SQUARE_SIZE
     col = x // SQUARE_SIZE
-    return row, col
+    row = y // SQUARE_SIZE
+    print(row, col)
+    return (row, col)
 
 def main():
     run = True
@@ -34,11 +35,10 @@ def main():
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                dest = (row, col) = get_row_col_from_mouse(pos)
-                #print(row,col)
+                dest = get_row_col_from_mouse(pos)
                 game.select(dest)
                 game.update()
-                game.board.printBoard()
+                #game.board.printBoard()
 
 
 if __name__ == "__main__":
