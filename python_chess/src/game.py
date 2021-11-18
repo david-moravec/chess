@@ -23,23 +23,26 @@ class Game:
             pass
         pygame.display.update()
 
-    def select(self, row, col):
+    def select(self, dest):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
         if self.selected:
-            self.selected.move((row, col), self.board)
+            self.selected.move(dest, self.board)
+            self.board.removePiece(self.selected.old_dest)
 
-            old_row = self.selected.row
-            old_col = self.selected.col
-            if row != old_row and col != old_col:
-                self.board.removePiece(old_row, old_col)
+            #old_row = self.selected.row
+            #old_col = self.selected.col
+            #if row != old_row and col != old_col:
+            #    self.board.removePiece(old_row, old_col)
+
             self.board.changeTurns()
             self.selected = None
 
         #if we have no piece selected, select current piece
         else:
-            piece = self.board.getPiece(row, col)
+            piece = self.board.getPiece(dest)
             if piece != 0 and piece.team == self.board.turn:
                 self.selected = piece
+                self.selected.old_dest = dest
                 self.selected.getValidMoves(self.board) #gets the valid moves of a piece
             if DEBUG:
                 print(self.select.__name__, self.selected)

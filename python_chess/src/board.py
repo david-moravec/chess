@@ -11,8 +11,10 @@ class Board:
     def __init__(self):
         self.createBoard()
 
-    def getPiece(self, row, col):
+    def getPiece(self, dest):
         #print(self.board[row][col])
+        row = dest[0]
+        col = dest[1]
         return self.board[row][col]
 
     def createBoard(self):
@@ -42,8 +44,8 @@ class Board:
         if DEBUG:
             print(self.placePiece.__name__, row, col, self.board[row][col])
 
-    def removePiece(self, row, col):
-        self.board[row][col] = 0
+    def removePiece(self, dest):
+        self.board[dest[0]][dest[1]] = 0
 
     def drawSquares(self, win):
         win.fill(WHITE)

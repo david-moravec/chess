@@ -34,9 +34,9 @@ def main():
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                row, col = get_row_col_from_mouse(pos)
+                dest = (row, col) = get_row_col_from_mouse(pos)
                 #print(row,col)
-                game.select(row, col)
+                game.select(dest)
                 game.update()
                 game.board.printBoard()
 

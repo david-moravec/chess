@@ -43,6 +43,7 @@ class Piece(ABC):
     def __init__(self, dest, team, board):
         self.team  = team
         self.move(dest, board)
+        self.olf_dest = (0,0)
 
     def move(self, dest, board):
         try: 
@@ -55,8 +56,8 @@ class Piece(ABC):
                 pass
         except AttributeError:
                 self.makeMove(dest)
-
         board.placePiece(self)
+
 
     def makeMove(self, dest):
         self.row = dest[0]
@@ -113,8 +114,9 @@ class Knight(Piece):
         for move in potential_moves:
             row = move[0]
             col = move[1]
+            dest = (row, col)
             try:
-                target_piece = board.getPiece(row, col)  
+                target_piece = board.getPiece(dest)  
             except IndexError:
                 continue
 
