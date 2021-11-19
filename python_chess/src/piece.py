@@ -60,7 +60,6 @@ class Piece(ABC):
 
                 if dest in board.valid_moves:
                     self.makeMove(dest)
-                    self.moved = True
                     board.resetValidMoves()
                 else:
                     pass
@@ -72,7 +71,7 @@ class Piece(ABC):
 
         board.placePiece(self)
         # remove piece from old colation
-        if not self.move == 0:
+        if self.moved:
             board.removePiece(self.old_dest, dest)
         board.valid_moves = []
 
@@ -80,9 +79,11 @@ class Piece(ABC):
     def makeMove(self, dest):
         self.row = dest[0]
         self.col = dest[1]
+        self.moved = True
 
         if DEBUG:
             print(self.makeMove.__name__, "movingPiece to", dest[0], dest[1])
+
     def resetMoved(self):
         self.moved = False
 
