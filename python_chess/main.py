@@ -1,6 +1,6 @@
 from src.board import Board
 import pygame
-from src.constants import HEIGHT, WIDTH, SQUARE_SIZE
+from src.constants import HEIGHT, WIDTH, SQUARE_SIZE, Position
 from src.game import Game
 
 import inspect
@@ -17,7 +17,7 @@ def get_row_col_from_mouse(pos):
     row = y // SQUARE_SIZE
     if DEBUG:
         print(row, col)
-    return (row, col)
+    return Position(row, col)
 
 def main():
     run = True
@@ -38,8 +38,8 @@ def main():
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                dest = get_row_col_from_mouse(pos)
-                game.select(dest)
+                position = get_row_col_from_mouse(pos)
+                game.evaluateClick(position)
                 game.update()
                 #game.board.printBoard()
 

@@ -38,64 +38,51 @@ for img in w:
 '''
 
 class Piece(ABC):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        self.team  = team
-        self.old_dest = (0,0)
-        self.move(dest, board)
-        self.moved = False
+    def __init__(self, position, team):
+        self.__team  = team
+        self.__old_position = (0,0)
+        self.__valid_moves = []
+        self.move(position)
+        self.__moved = False
+        self.alive = True
 
-    def move(self, dest, board):
+    def position(self):
+        return (self._position)
+
+    def oldPosition(self):
+        return self.__old_position
+
+    def move(self, position):
         # if we have the first round of chess we dont have any valid moves to look for 
         #import pdb; pdb.set_trace()
-        if board.move == 0:
-            self.makeMove(dest)
-            
-        else:
-            try: 
-                if DEBUG:
-                    print(board.valid_moves, dest)
+        try: 
+            if DEBUG:
+                print(self.__valid_moves, position)
 
-                if dest in board.valid_moves:
-                    self.makeMove(dest)
-                    board.resetValidMoves()
-                else:
-                    pass
-                if DEBUG:
-                    print(board.valid_moves)
-            except AttributeError:
-                    pass
-                    #self.makeMove(dest)
+            if position in self.__valid_moves:
+                self._position = position
+                self.__moved = True
+                self.__resetValidMoves()
+            else:
+                pass
+            if DEBUG:
+                print(board.valid_moves)
+        except AttributeError:
+                pass
+                #self.makeMove(position)
 
-        board.placePiece(self)
         # remove piece from old colation
-        if self.moved:
-            board.removePiece(self.old_dest, dest)
-        board.valid_moves = []
-
-
-    def makeMove(self, dest):
-        self.row = dest[0]
-        self.col = dest[1]
-        self.moved = True
-
-        if DEBUG:
-            print(self.makeMove.__name__, "movingPiece to", dest[0], dest[1])
 
     def resetMoved(self):
         self.moved = False
 
-    def didMove(self, dest):
-        print(dest, self.getOldDest())
-        return dest != self.getOldDest()
+    def didMove(self, position):
+        print(position, self.oldPosition())
+        return position != self.oldPosition()
 
-    def getDest(self):
-        return (self.row, self.col)
-
-    def getOldDest(self):
-        return self.old_dest
+    def resetValidMoves(self):
+        self.valid_moves = []
 
     @abstractmethod
     def getValidMoves(self, board):
@@ -103,23 +90,22 @@ class Piece(ABC):
 
     def getImage(self):
         if self.team == BLUE:
-            return self.image_black
+            return self.__image_black
         elif self.team == WHITE:
-            return self.image_white
+            return self.__image_white
 
 class Knight(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "n"
 
     def getValidMoves(self, board):
         #print(self.row, self.col)
-        board.valid_moves = []
         potential_moves = []
 
         potential_moves.append((self.row + 2, self.col + 1))
@@ -146,14 +132,14 @@ class Knight(Piece):
             if move[0] > 7 or move[0] < 0 or move[1] > 7 or move[1] < 0:
                 continue
 
-            dest = move
+            position = move
             try:
-                target_piece = board.getPiece(dest)  
+                target_piece = board.getPiece(position)  
             except IndexError:
                 continue
 
             #if target_piece.team == board.turn and target_piece != 0:
-            board.valid_moves.append(dest)
+            self.__valid_moves.append
 
             if DEBUG:
                 print(self.getValidMoves.__name__, valid_moves)
@@ -161,87 +147,87 @@ class Knight(Piece):
 
 
 class Bishop(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "b"
 
-    def checkMove(self, dest):
+    def checkMove(self, position):
         return True
 
     def getValidMoves(self, board):
         pass
         
 class Rook(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "r"
 
-    def checkMove(self, dest):
+    def checkMove(self, position):
         return True
-        Piece.__init__(self, dest, team, board)
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "r"
 
-    def checkMove(self, dest):
+    def checkMove(self, position):
         return True
     
     def getValidMoves(self, board):
         pass
 
 class Queen(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "q"
 
-    def checkmove(self, dest):
+    def checkmove(self, position):
         return true
 
     def getValidMoves(self, board):
         pass
     
 class King(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "k"
 
-    def checkMove(self, dest):
+    def checkMove(self, position):
         return True
 
     def getValidMoves(self, board):
         pass
 
 class Pawn(Piece):
-    image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
-    image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, dest, team, board):
-        Piece.__init__(self, dest, team, board)
+    def __init__(self, position, team, board):
+        Piece.__init__(self, position, team, board)
 
     def __repr__(self):
         return "p"
 
-    def checkMove(self, dest):
+    def checkMove(self, position):
         return True
 
     def getValidMoves(self, board):

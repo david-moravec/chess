@@ -1,3 +1,10 @@
+from dataclasses import dataclass
+
+@dataclass
+class Position:
+    row: int 
+    col: int 
+
 WIDTH, HEIGHT = 400, 400
 SQUARE_SIZE = 50
 SCALE_FACTOR = (40, 40)

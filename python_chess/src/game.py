@@ -2,44 +2,47 @@ import pygame
 from src.board import Board
 from src.constants import WHITE, BLUE, DEBUG
 
+#interface between pyGame and board
+
 DEBUG = False
 
-class Game:
+class Game(Board):
     def __init__(self, win):
         self._init()
         self.win = win
 
     def _init(self):
-        self.selected = None
-        self.board = Board()
-        self.valid_moves = {}
+        self.__selected = None
+        Board.__init__(self)
+        self.turn = WHITE
 
     def update(self):
-        self.board.drawSquares(self.win)
-        self.board.draw(self.win)
-        try:
-            self.board.drawValidMoves(self.win)
-        except:
-            pass
+        self._update()
         pygame.display.update()
 
-    def select(self, dest):
+    def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
-        if self.selected:
-            self.selected.move(dest, self.board)
-            if self.selected.moved:
-                self.board.changeTurns()
-                self.selected.resetMoved()
-            self.selected = None
+        if self.__selected:
+            self.__selected.move(position, self.board)
+            if self.__selected.moved:
+                self.__changeTurns()
+                self.__selected.resetMoved()
+            self.__selected = None
 
         #if we have no piece selected, select current piece
         else:
-            piece = self.board.getPiece(dest)
-            if piece != 0 and piece.team == self.board.turn:
-                self.selected = piece
-                self.selected.old_dest = dest
-                self.selected.getValidMoves(self.board) #gets the valid moves of a piece
+            piece = self._getPiece(position)
+            if piece != 0 and piece.team == self.turn:
+                self.__selected = piece
+                self.__selected.old_dest = position
+                self.__selected.getValidMoves() #gets the valid moves of a piece
 
             if DEBUG:
-                print(self.select.__name__, self.selected)
-                print(self.select.__name__, self.board.valid_moves)
+                print(self.select.__name__, self.__selected)
+                print(self.select.__name__, self._valid_moves)
+
+    def __changeTurns(self):
+        if self.turn == WHITE:
+            self.turn = BLUE
+        else:
+            self.turn = WHITE
