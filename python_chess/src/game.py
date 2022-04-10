@@ -27,6 +27,7 @@ class Game(Board):
             if self.__selected.moved:
                 self.__changeTurns()
                 self.__selected.resetMoved()
+                self._resetValidMoves()
 
             self.__selected = None
 

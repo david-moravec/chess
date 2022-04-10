@@ -130,8 +130,8 @@ class Knight(Piece):
         for move in potential_moves:
             if move.row > 7 or move.row < 0 or move.col > 7 or move.col < 0:
                 continue
-
-            position = move
+            else:
+                self._potential_moves.append(move)
             '''
             try:
                 target_piece = board.getPiece(position)  
@@ -140,11 +140,11 @@ class Knight(Piece):
             '''
 
             #if target_piece.team == board.turn and target_piece != 0:
-            self._potential_moves.append
 
             if DEBUG:
-                print(self.getPotentialMoves.__name__, valid_moves)
+                print(self.getPotentialMoves.__name__, self._potential_moves)
         #print(board.valid_moves)
+        print(self._potential_moves)
         return self._potential_moves
 
 

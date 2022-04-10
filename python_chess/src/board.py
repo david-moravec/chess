@@ -20,7 +20,7 @@ class Board:
         self.__drawSquares(self.win)
         self.__drawPieces(self.win)
         try:
-            self.__board.drawValidMoves(self.win)
+            self.__drawValidMoves(self.win)
         except:
             pass
 
@@ -39,7 +39,7 @@ class Board:
             self.__board.append(row)
 
         self.__startingSetup()
-        self._validMoves = []
+        self._valid_moves = []
 
         #self.printBoard()
 
@@ -54,13 +54,14 @@ class Board:
             #print(self.placePiece.__name__, row, col, self.board[row][col])
 
     def _getValidMoves(self, piece):
+        print(piece.getPotentialMoves())
         for move in piece.getPotentialMoves():
             target = self._getPiece(move)
             if (type(target) == type(Piece)):
                 if (target.team() == piece.team()):
                     pass
             else:
-                self._validMoves.append(move)
+                self._valid_moves.append(move)
 
     def __removePiece(self, old_position, new_position):
         if isinstance(self._getPiece(new_position), Piece):
@@ -75,11 +76,11 @@ class Board:
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def __drawValidMoves(self, win):
-        for move in self.valid_moves:
+        for move in self._valid_moves:
             #print(move)
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
-            pygame.draw.circle(win, GREEN, (col, row ), 15)
+            pygame.draw.circle(win, GREEN, (row, col), 15)
         #self.valid_moves = []
 
     def __drawPieces(self, win):
@@ -89,6 +90,9 @@ class Board:
                 win.blit(piece.getImage(), square_center)
             else:
                 continue
+
+    def _resetValidMoves(self):
+        self._valid_moves = []
 
 
     def __startingSetup(self):
