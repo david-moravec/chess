@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from typing import NamedTuple
 
-@dataclass
-class Position:
+class Position(NamedTuple):
     row: int 
     col: int 
 

@@ -8,19 +8,8 @@ from src.constants import SQUARE_SIZE, SCALE_FACTOR, WHITE, BLUE, ROWS, COLS, GR
 #stores all the info about pices passes moves from pygame guie to selected piece
 
 #DEBUG = False
-class Tile:
-    def __init__(self, position):
-        self.__piece
-        self.position = position
-
-    def getPiece():
-        return self._pieces
-
-    def addPiece(piece):
-        self._pieces = self._pieces + (piece)
 
 class Board:
-    #__chessSet
     def __init__(self):
         self.__createBoard()
 
@@ -50,6 +39,7 @@ class Board:
             self.__board.append(row)
 
         self.__startingSetup()
+        self._validMoves = []
 
         #self.printBoard()
 
@@ -63,6 +53,14 @@ class Board:
         #if DEBUG:
             #print(self.placePiece.__name__, row, col, self.board[row][col])
 
+    def _getValidMoves(self, piece):
+        for move in piece.getPotentialMoves():
+            target = self._getPiece(move)
+            if (type(target) == type(Piece)):
+                if (target.team() == piece.team()):
+                    pass
+            else:
+                self._validMoves.append(move)
 
     def __removePiece(self, old_position, new_position):
         if isinstance(self._getPiece(new_position), Piece):
@@ -109,7 +107,7 @@ class Board:
                 try:
                     col += int(char)
                 except ValueError:
-                    self.__initPieceInPosition(char, (row, col))
+                    self.__initPieceInPosition(char, Position(row, col))
                     col+=1
             col = 0
             row+=1
@@ -133,7 +131,7 @@ class Board:
             piece = p.Pawn(position, team)
 
         self._pieces = self._pieces + (piece,)
-        self.__board[position[0]][position[1]] = piece
+        self.__board[position.row][position.col] = piece
 
     def _printBoard(self):
         for row in self.__board:

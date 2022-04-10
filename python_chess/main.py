@@ -13,11 +13,12 @@ pygame.display.set_caption("Chess")
 
 def get_row_col_from_mouse(pos):
     x, y = pos
-    col = x // SQUARE_SIZE
-    row = y // SQUARE_SIZE
+    col = y // SQUARE_SIZE
+    row = x // SQUARE_SIZE
+    position = Position(row, col)
     if DEBUG:
-        print(row, col)
-    return Position(row, col)
+        print(position)
+    return position
 
 def main():
     run = True
@@ -41,7 +42,7 @@ def main():
                 position = get_row_col_from_mouse(pos)
                 game.evaluateClick(position)
                 game.update()
-                game._printBoard()
+                #game._printBoard()
 
 
 if __name__ == "__main__":

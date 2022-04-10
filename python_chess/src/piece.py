@@ -2,7 +2,7 @@ import pygame
 import os
 from abc import ABC, abstractmethod
 
-from src.constants import SCALE_FACTOR, BLUE, WHITE, DEBUG
+from src.constants import SCALE_FACTOR, BLUE, WHITE, DEBUG, Position
 
 knight_black = pygame.image.load("figures/black-knight.png")
 knight_white = pygame.image.load("figures/white-knight.png")
@@ -43,9 +43,9 @@ class Piece(ABC):
     def __init__(self, position, team):
         self._team  = team
         self.__old_position = (0,0)
-        self.__valid_moves = []
-        self.move(position, init=True)
-        self.__moved = False
+        self._potential_moves = []
+        self.move(position)
+        self.moved = False
         self.alive = True
 
     def position(self):
@@ -57,23 +57,16 @@ class Piece(ABC):
     def team(self):
         return self._team
 
-    def move(self, position, init=False):
-        # if we have the first round of chess we dont have any valid moves to look for 
-        #import pdb; pdb.set_trace()
-        try: 
-            if DEBUG:
-                print(self.__valid_moves, position)
+    def getPotentialMoves(self):
+        return self._potential_moves
 
-            if position in self.__valid_moves or init:
-                self._position = position
-                self.__moved = True
-                self.__resetValidMoves()
-            else:
-                pass
-            if DEBUG:
-                print(board.valid_moves)
+    def move(self, position):
+        try: 
+            self._position = position
+            self.moved = True
+            self.__resetValidMoves()
         except AttributeError:
-                pass
+            pass
                 #self.makeMove(position)
 
         # remove piece from old colation
@@ -81,15 +74,16 @@ class Piece(ABC):
     def resetMoved(self):
         self.moved = False
 
+
     def didMove(self, position):
-        print(position, self.oldPosition())
+        #print(position, self.oldPosition())
         return position != self.oldPosition()
 
     def resetValidMoves(self):
         self.valid_moves = []
 
     @abstractmethod
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
 
     def getImage(self):
@@ -108,21 +102,22 @@ class Knight(Piece):
     def __repr__(self):
         return "n"
 
-    def getValidMoves(self, board):
-        #print(self.row, self.col)
+    def getPotentialMoves(self):
         potential_moves = []
+        row = self._position.row
+        col = self._position.col
 
-        potential_moves.append((self.row + 2, self.col + 1))
-        potential_moves.append((self.row + 1, self.col + 2))
+        potential_moves.append(Position(row + 2, col + 1))
+        potential_moves.append(Position(row + 1, col + 2))
 
-        potential_moves.append((self.row - 2, self.col + 1))
-        potential_moves.append((self.row - 1, self.col + 2))
+        potential_moves.append(Position(row - 2, col + 1))
+        potential_moves.append(Position(row - 1, col + 2))
 
-        potential_moves.append((self.row + 2, self.col - 1))
-        potential_moves.append((self.row + 1, self.col - 2))
+        potential_moves.append(Position(row + 2, col - 1))
+        potential_moves.append(Position(row + 1, col - 2))
         
-        potential_moves.append((self.row - 2, self.col - 1))
-        potential_moves.append((self.row - 1, self.col - 2))
+        potential_moves.append(Position(row - 2, col - 1))
+        potential_moves.append(Position(row - 1, col - 2))
         '''
         for d in range (-1, 2, 2):
             potential_moves.append((self.col + 2, self.col + d))
@@ -133,21 +128,24 @@ class Knight(Piece):
         '''
 
         for move in potential_moves:
-            if move[0] > 7 or move[0] < 0 or move[1] > 7 or move[1] < 0:
+            if move.row > 7 or move.row < 0 or move.col > 7 or move.col < 0:
                 continue
 
             position = move
+            '''
             try:
                 target_piece = board.getPiece(position)  
             except IndexError:
                 continue
+            '''
 
             #if target_piece.team == board.turn and target_piece != 0:
-            self.__valid_moves.append
+            self._potential_moves.append
 
             if DEBUG:
-                print(self.getValidMoves.__name__, valid_moves)
+                print(self.getPotentialMoves.__name__, valid_moves)
         #print(board.valid_moves)
+        return self._potential_moves
 
 
 class Bishop(Piece):
@@ -163,7 +161,7 @@ class Bishop(Piece):
     def checkMove(self, position):
         return True
 
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
         
 class Rook(Piece):
@@ -186,7 +184,7 @@ class Rook(Piece):
     def checkMove(self, position):
         return True
     
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
 
 class Queen(Piece):
@@ -202,7 +200,7 @@ class Queen(Piece):
     def checkmove(self, position):
         return true
 
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
     
 class King(Piece):
@@ -218,7 +216,7 @@ class King(Piece):
     def checkMove(self, position):
         return True
 
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
 
 class Pawn(Piece):
@@ -234,5 +232,5 @@ class Pawn(Piece):
     def checkMove(self, position):
         return True
 
-    def getValidMoves(self, board):
+    def getPotentialMoves(self):
         pass
