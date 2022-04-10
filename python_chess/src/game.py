@@ -4,7 +4,7 @@ from src.constants import WHITE, BLUE, DEBUG
 
 #interface between pyGame and board
 
-DEBUG = False
+DEBUG = True
 
 class Game(Board):
     def __init__(self, win):
@@ -23,23 +23,27 @@ class Game(Board):
     def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
         if self.__selected:
-            self.__selected.move(position, self.board)
+            self.__selected.move(position)
             if self.__selected.moved:
                 self.__changeTurns()
                 self.__selected.resetMoved()
+
             self.__selected = None
 
         #if we have no piece selected, select current piece
         else:
-            piece = self._getPiece(position)
-            if piece != 0 and piece.team == self.turn:
-                self.__selected = piece
-                self.__selected.old_dest = position
-                self.__selected.getValidMoves() #gets the valid moves of a piece
+            for piece in self._pieces:
+                if (    piece.position() == position
+                    and piece != 0
+                    and piece.team == self.turn
+                   ):
+                        self.__selected = self._getPiece(position)
+                        self.__selected.old_dest = position
+                        self.__selected.getValidMoves() #gets the valid moves of a piece
 
             if DEBUG:
-                print(self.select.__name__, self.__selected)
-                print(self.select.__name__, self._valid_moves)
+                print(self.evaluateClick.__name__, "selected Piece:", self.__selected)
+                #print(self.evaluateClick.__name__, self._valid_moves)
 
     def __changeTurns(self):
         if self.turn == WHITE:

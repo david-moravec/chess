@@ -38,12 +38,13 @@ for img in w:
 '''
 
 class Piece(ABC):
-
+    __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
+    __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
     def __init__(self, position, team):
-        self.__team  = team
+        self._team  = team
         self.__old_position = (0,0)
         self.__valid_moves = []
-        self.move(position)
+        self.move(position, init=True)
         self.__moved = False
         self.alive = True
 
@@ -53,14 +54,17 @@ class Piece(ABC):
     def oldPosition(self):
         return self.__old_position
 
-    def move(self, position):
+    def team(self):
+        return self._team
+
+    def move(self, position, init=False):
         # if we have the first round of chess we dont have any valid moves to look for 
         #import pdb; pdb.set_trace()
         try: 
             if DEBUG:
                 print(self.__valid_moves, position)
 
-            if position in self.__valid_moves:
+            if position in self.__valid_moves or init:
                 self._position = position
                 self.__moved = True
                 self.__resetValidMoves()
@@ -89,16 +93,16 @@ class Piece(ABC):
         pass
 
     def getImage(self):
-        if self.team == BLUE:
+        if self._team == BLUE:
             return self.__image_black
-        elif self.team == WHITE:
+        elif self._team == WHITE:
             return self.__image_white
 
 class Knight(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
+    def __init__(self, position, team):
         Piece.__init__(self, position, team)
 
     def __repr__(self):

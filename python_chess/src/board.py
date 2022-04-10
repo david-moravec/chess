@@ -14,10 +14,10 @@ class Tile:
         self.position = position
 
     def getPiece():
-        return self.__piece
+        return self._pieces
 
     def addPiece(piece):
-        self.pieces = self.pieces + (piece)
+        self._pieces = self._pieces + (piece)
 
 class Board:
     #__chessSet
@@ -40,7 +40,7 @@ class Board:
 
     def __createBoard(self):
         self.__board = []
-        self.__pieces = ()
+        self._pieces = ()
         self.turn = WHITE
 
         for row in range(ROWS):
@@ -55,8 +55,8 @@ class Board:
 
 
     def __placePiece(self, piece):
-        row = piece.row
-        col = piece.col
+        row = piece.position.row
+        col = piece.position.col
         self.__board[row][col] = piece
         #print("placing piece on", (row, col))
         #self.printBoard()
@@ -64,11 +64,11 @@ class Board:
             #print(self.placePiece.__name__, row, col, self.board[row][col])
 
 
-    def __removePiece(self, old_dest, new_dest):
-        if isinstance(self.getPiece(new_dest), Piece):
-            self.board[old_dest[0]][old_dest[1]] = 0
+    def __removePiece(self, old_position, new_position):
+        if isinstance(self._getPiece(new_position), Piece):
+            self.board[old_position[0]][old_position[1]] = 0
             if DEBUG:
-                print("removing Piece on", old_dest)
+                print("removing Piece on", old_position)
 
     def __drawSquares(self, win):
         win.fill(WHITE)
@@ -85,11 +85,10 @@ class Board:
         #self.valid_moves = []
 
     def __drawPieces(self, win):
-        for piece in self.__pieces:
+        for piece in self._pieces:
             if piece.alive:
-                square_center = SQUARE_SIZE * piece.position().row + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 
+                square_center = tuple(SQUARE_SIZE * coord + (SQUARE_SIZE - SCALE_FACTOR[0]) / 2 for coord in piece.position()) 
                 win.blit(piece.getImage(), square_center)
-                print("kek")
             else:
                 continue
 
@@ -98,7 +97,7 @@ class Board:
         #self.__applcolFENposition("1N3/5/5/5/1n3")
         #self.__applcolFENposition("4N3/pppppppp/8/8/8/8/pppppppp/3n4")
         self.__applcolFENposition("4N3/8/8/8/8/8/8/3n4")
-        #print(self.__piecesposition())
+        #print(self._piecesposition())
         #self.__applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
 
@@ -115,27 +114,28 @@ class Board:
             col = 0
             row+=1
 
-    def __initPieceInPosition(self, char, dest):
+    def __initPieceInPosition(self, char, position):
         if char.isupper():
             team = WHITE
         else:
             team = BLUE
         if char == "n" or char == "N":
-            piece = p.Knight(dest, team, self)
+            piece = p.Knight(position, team)
         elif char == "b" or char == "B":
-            piece = p.Bishop(dest, team, self)
+            piece = p.Bishop(position, team)
         elif char == "r" or char == "R":
-            piece = p.Rook(dest, team, self)
+            piece = p.Rook(position, team)
         elif char == "q" or char == "Q":
-            piece = p.Queen(dest, team, self)
+            piece = p.Queen(position, team)
         elif char == "k" or char == "K":
-            piece = p.King(dest, team, self)
+            piece = p.King(position, team)
         elif char == "p" or char == "P":
-            piece = p.Pawn(dest, team, self)
+            piece = p.Pawn(position, team)
 
-        self.__pieces = self.__pieces + (piece,)
+        self._pieces = self._pieces + (piece,)
+        self.__board[position[0]][position[1]] = piece
 
-    def printBoard(self):
+    def _printBoard(self):
         for row in self.__board:
             print(row)
         print("\n")    

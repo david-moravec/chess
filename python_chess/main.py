@@ -41,7 +41,7 @@ def main():
                 position = get_row_col_from_mouse(pos)
                 game.evaluateClick(position)
                 game.update()
-                #game.board.printBoard()
+                game._printBoard()
 
 
 if __name__ == "__main__":
