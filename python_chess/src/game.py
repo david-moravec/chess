@@ -20,10 +20,20 @@ class Game(Board):
         self._update()
         pygame.display.update()
 
+    def __movePiece(self, move):
+        if move in self._valid_moves:
+            self.__selected.move(move)
+
+    def _removePiece(self, old_position, new_position):
+        if isinstance(self._getPiece(new_position), Piece):
+            self.board[old_position[0]][old_position[1]] = 0
+            if DEBUG:
+                print("removing Piece on", old_position)
+
     def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
         if self.__selected:
-            self.__selected.move(position)
+            self.__movePiece(position)
             if self.__selected.moved:
                 self.__changeTurns()
                 self.__selected.resetMoved()

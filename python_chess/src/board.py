@@ -44,15 +44,6 @@ class Board:
         #self.printBoard()
 
 
-    def __placePiece(self, piece):
-        row = piece.position.row
-        col = piece.position.col
-        self.__board[row][col] = piece
-        #print("placing piece on", (row, col))
-        #self.printBoard()
-        #if DEBUG:
-            #print(self.placePiece.__name__, row, col, self.board[row][col])
-
     def _getValidMoves(self, piece):
         #print(piece.getPotentialMoves())
         for move in piece.getPotentialMoves():
@@ -63,11 +54,6 @@ class Board:
             else:
                 self._valid_moves.append(move)
 
-    def __removePiece(self, old_position, new_position):
-        if isinstance(self._getPiece(new_position), Piece):
-            self.board[old_position[0]][old_position[1]] = 0
-            if DEBUG:
-                print("removing Piece on", old_position)
 
     def __drawSquares(self, win):
         win.fill(WHITE)

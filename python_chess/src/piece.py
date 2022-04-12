@@ -42,7 +42,8 @@ class Piece(ABC):
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
     def __init__(self, position, team):
         self._team  = team
-        self.__old_position = (0,0)
+        self._old_position = (0,0)
+        self._position = (0,0)
         self._potential_moves = []
         self.move(position)
         self.moved = False
@@ -60,16 +61,12 @@ class Piece(ABC):
     def getPotentialMoves(self):
         return self._potential_moves
 
-    def move(self, position):
-        try: 
-            self._position = position
-            self.moved = True
-            self.__resetValidMoves()
-        except AttributeError:
-            pass
-                #self.makeMove(position)
 
-        # remove piece from old colation
+    def move(self, position):
+        print("A", self._position)
+        self._position = position
+        self.moved = True
+        print("B", self._position)
 
     def resetMoved(self):
         self.moved = False
