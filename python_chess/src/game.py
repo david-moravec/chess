@@ -41,8 +41,8 @@ class Game(Board):
                 if (    piece.position() == position
                     and piece.team() == self.turn
                    ):
-                        self.__selected = self._getPiece(position)
-                        self.__selected.old_dest = position
+                        self.__selected = piece
+                        self.__selected.old_position = position
                         self._getValidMoves(self.__selected)
 
             if DEBUG:

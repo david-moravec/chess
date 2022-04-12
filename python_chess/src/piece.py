@@ -104,6 +104,8 @@ class Knight(Piece):
 
     def getPotentialMoves(self):
         potential_moves = []
+        self.__resetPotentialMoves()
+
         row = self._position.row
         col = self._position.col
 
@@ -144,8 +146,10 @@ class Knight(Piece):
             if DEBUG:
                 print(self.getPotentialMoves.__name__, self._potential_moves)
         #print(board.valid_moves)
-        print(self._potential_moves)
         return self._potential_moves
+
+    def __resetPotentialMoves(self):
+        self._potential_moves = []
 
 
 class Bishop(Piece):

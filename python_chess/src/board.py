@@ -54,7 +54,7 @@ class Board:
             #print(self.placePiece.__name__, row, col, self.board[row][col])
 
     def _getValidMoves(self, piece):
-        print(piece.getPotentialMoves())
+        #print(piece.getPotentialMoves())
         for move in piece.getPotentialMoves():
             target = self._getPiece(move)
             if (type(target) == type(Piece)):
@@ -81,7 +81,7 @@ class Board:
             row = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
             col = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
             pygame.draw.circle(win, GREEN, (row, col), 15)
-        #self.valid_moves = []
+        self._resetValidMoves()
 
     def __drawPieces(self, win):
         for piece in self._pieces:
