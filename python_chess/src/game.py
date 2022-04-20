@@ -24,12 +24,11 @@ class Game(Board):
     def __movePiece(self, move):
         if move in self._valid_moves:
             self.__selected.move(move)
-
-    def _removePiece(self, old_position, new_position):
-        if isinstance(self._getPiece(new_position), Piece):
-            self.board[old_position[0]][old_position[1]] = 0
-            if DEBUG:
-                print("removing Piece on", old_position)
+            for piece in self._pieces:
+                if(    piece.position() == move
+                   and piece.team() != self.turn
+                  ):
+                    piece.die()
 
     def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
@@ -46,7 +45,7 @@ class Game(Board):
 
         #if we have no piece selected, select current piece
         else:
-            for piece in self._pieces:
+            for piece in self._pieces_alive:
                 if (    piece.position() == position
                     and piece.team() == self.turn
                    ):

@@ -69,6 +69,8 @@ class Piece(ABC):
     def resetMoved(self):
         self.moved = False
 
+    def die(self):
+        self.alive = False
 
     def didMove(self, position):
         #print(position, self.oldPosition())

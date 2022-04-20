@@ -30,6 +30,7 @@ class Board:
     def __createBoard(self):
         self.__board = []
         self._pieces = ()
+        self._pieces_alive = []
         self.turn = WHITE
 
         for row in range(ROWS):
@@ -57,6 +58,11 @@ class Board:
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, BLUE, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+    def _updateLivingPieces(self):
+        for piece in self._pieces_alive:
+            if not piece.alive:
+                self._pieces_alive.pop(piece)
 
     def __drawValidMoves(self, win):
         for move in self._valid_moves:
@@ -116,6 +122,7 @@ class Board:
             piece = p.Pawn(position, team)
 
         self._pieces = self._pieces + (piece,)
+        self._pieces_alive.append(piece)
         self.__board[position.row][position.col] = piece
 
     def _printBoard(self):
