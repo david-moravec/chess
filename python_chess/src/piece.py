@@ -63,10 +63,8 @@ class Piece(ABC):
 
 
     def move(self, position):
-        print("A", self._position)
         self._position = position
         self.moved = True
-        print("B", self._position)
 
     def resetMoved(self):
         self.moved = False
@@ -117,32 +115,15 @@ class Knight(Piece):
         
         potential_moves.append(Position(row - 2, col - 1))
         potential_moves.append(Position(row - 1, col - 2))
-        '''
-        for d in range (-1, 2, 2):
-            potential_moves.append((self.col + 2, self.col + d))
-            potential_moves.append((self.col + d, self.col + 2))
-        for d in range (-2, 4, 3):
-            potential_moves.append((self.col + 1, self.col + d))
-            potential_moves.append((self.col + d, self.col + 1))
-        '''
 
         for move in potential_moves:
             if move.row > 7 or move.row < 0 or move.col > 7 or move.col < 0:
                 continue
             else:
                 self._potential_moves.append(move)
-            '''
-            try:
-                target_piece = board.getPiece(position)  
-            except IndexError:
-                continue
-            '''
-
-            #if target_piece.team == board.turn and target_piece != 0:
 
             if DEBUG:
                 print(self.getPotentialMoves.__name__, self._potential_moves)
-        #print(board.valid_moves)
         return self._potential_moves
 
     def __resetPotentialMoves(self):

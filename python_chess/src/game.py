@@ -6,6 +6,7 @@ from src.constants import WHITE, BLUE, DEBUG
 
 DEBUG = False
 
+
 class Game(Board):
     def __init__(self, win):
         self._init()
@@ -32,6 +33,7 @@ class Game(Board):
 
     def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
+        breakpoint()
         if self.__selected:
             self.__movePiece(position)
             if self.__selected.moved:
@@ -40,14 +42,11 @@ class Game(Board):
                 self._resetValidMoves()
 
             self.__selected = None
+            position = None
 
         #if we have no piece selected, select current piece
         else:
             for piece in self._pieces:
-                #print(piece)
-                #print(piece.position())
-                #print(position)
-                #print(piece.team() == self.turn)
                 if (    piece.position() == position
                     and piece.team() == self.turn
                    ):
@@ -59,6 +58,8 @@ class Game(Board):
                 print(self.evaluateClick.__name__, "\n")
                 print("selected Piece:", self.__selected)
                 print("valid moves", self._valid_moves)
+
+
 
     def __changeTurns(self):
         if self.turn == WHITE:

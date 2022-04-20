@@ -3,6 +3,9 @@ import pygame
 from src.constants import HEIGHT, WIDTH, SQUARE_SIZE, Position
 from src.game import Game
 
+import os
+os.environ["PYTHONBREAKPOINT"] = "0"
+
 import inspect
 
 DEBUG = False
