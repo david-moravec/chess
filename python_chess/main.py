@@ -16,8 +16,8 @@ pygame.display.set_caption("Chess")
 
 def get_row_col_from_mouse(pos):
     x, y = pos
-    col = y // SQUARE_SIZE
-    row = x // SQUARE_SIZE
+    row = y // SQUARE_SIZE
+    col = x // SQUARE_SIZE
     position = Position(row, col)
     if DEBUG:
         print(position)

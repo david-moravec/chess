@@ -146,6 +146,8 @@ class Bishop(Piece):
         return True
 
     def getPotentialMoves(self):
+        potential_moves = []
+        potential_moves
         pass
         
 class Rook(Piece):
