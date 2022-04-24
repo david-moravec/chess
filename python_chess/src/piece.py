@@ -170,10 +170,17 @@ class Rook(Piece):
     def __repr__(self):
         return "r"
 
-    def checkMove(self, position):
-        return True
-    
     def getPotentialMoves(self):
+        potential_moves = []
+        row = self._position.row
+        col = self._position.col
+        for i in range(8):
+            potential_moves.append(Position(row + i, col))
+            potential_moves.append(Position(row - i, col))
+            potential_moves.append(Position(row, col - i))
+            potential_moves.append(Position(row, col + i))
+
+        return self.cropPotentialMoves(potential_moves)
         pass
 
 class Queen(Piece):
@@ -190,6 +197,22 @@ class Queen(Piece):
         return true
 
     def getPotentialMoves(self):
+        potential_moves = []
+        row = self._position.row
+        col = self._position.col
+        for i in range(8):
+            potential_moves.append(Position(row + i, col))
+            potential_moves.append(Position(row - i, col))
+            potential_moves.append(Position(row, col - i))
+            potential_moves.append(Position(row, col + i))
+
+            potential_moves.append(Position(row + i, col + i))
+            potential_moves.append(Position(row + i, col - i))
+            potential_moves.append(Position(row - i, col - i))
+            potential_moves.append(Position(row - i, col + i))
+
+        return self.cropPotentialMoves(potential_moves)
+        pass
         pass
     
 class King(Piece):
@@ -206,6 +229,20 @@ class King(Piece):
         return True
 
     def getPotentialMoves(self):
+        potential_moves = []
+        row = self._position.row
+        col = self._position.col
+        potential_moves.append(Position(row + 1, col))
+        potential_moves.append(Position(row - 1, col))
+        potential_moves.append(Position(row, col - 1))
+        potential_moves.append(Position(row, col + 1))
+
+        potential_moves.append(Position(row + 1, col + 1))
+        potential_moves.append(Position(row + 1, col - 1))
+        potential_moves.append(Position(row - 1, col - 1))
+        potential_moves.append(Position(row - 1, col + 1))
+
+        return self.cropPotentialMoves(potential_moves)
         pass
 
 class Pawn(Piece):
