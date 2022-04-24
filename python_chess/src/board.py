@@ -25,7 +25,9 @@ class Board:
             pass
 
     def _getPiece(self, position):
-        return self.__board[position.row][position.col]
+        for piece in self._pieces_alive:
+            if piece.position() == position:
+                return piece
 
     def __createBoard(self):
         self.__board = []
@@ -40,18 +42,26 @@ class Board:
             self.__board.append(row)
 
         self.__startingSetup()
-        self._valid_moves = []
+        self._valid_moves = {}
 
 
     def _getValidMoves(self, piece):
-        for move in piece.getPotentialMoves():
-            target = self._getPiece(move)
-            if (type(target) == type(Piece)):
-                if (target.team() == piece.team()):
-                    pass
-            else:
-                self._valid_moves.append(move)
-
+        potential_moves = piece.getPotentialMoves()
+        for key in potential_moves.keys():
+            self._valid_moves[key] = []
+            for move in potential_moves[key]:
+                target = self._getPiece(move)
+                print(move, target)
+                breakpoint()
+                if (type(target) != type(None)):
+                    print(piece.team())
+                    if (target.team() == piece.team()):
+                        break
+                    elif (target.team() != piece.team()):
+                        self._valid_moves[key].append(move)
+                        break
+                else:
+                    self._valid_moves[key].append(move)
 
     def __drawSquares(self, win):
         win.fill(WHITE)
@@ -64,11 +74,13 @@ class Board:
             if not piece.alive:
                 self._pieces_alive.pop(piece)
 
+
     def __drawValidMoves(self, win):
-        for move in self._valid_moves:
-            row = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
-            col = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
-            pygame.draw.circle(win, GREEN, (row, col), 15)
+        for key in self._valid_moves.keys():
+            for move in self._valid_moves[key]:
+                row = SQUARE_SIZE * move[1] + SQUARE_SIZE//2
+                col = SQUARE_SIZE * move[0] + SQUARE_SIZE//2
+                pygame.draw.circle(win, GREEN, (row, col), 15)
 
     def __drawPieces(self, win):
         for piece in self._pieces:
@@ -80,7 +92,7 @@ class Board:
                 continue
 
     def _resetValidMoves(self):
-        self._valid_moves = []
+        self._valid_moves = {}
 
 
     def __startingSetup(self):

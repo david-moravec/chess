@@ -22,13 +22,14 @@ class Game(Board):
         pygame.display.update()
 
     def __movePiece(self, move):
-        if move in self._valid_moves:
-            self.__selected.move(move)
-            for piece in self._pieces:
-                if(    piece.position() == move
-                   and piece.team() != self.turn
-                  ):
-                    piece.die()
+        for key in self._valid_moves.keys():
+            if move in self._valid_moves[key]:
+                self.__selected.move(move)
+                for piece in self._pieces:
+                    if(    piece.position() == move
+                       and piece.team() != self.turn
+                      ):
+                        piece.die()
 
     def evaluateClick(self, position):
         #if we already selected a piece, we want to move it. Currently does not support change of pieces, so if we choose a piece we HAVE to move it
