@@ -83,6 +83,16 @@ class Piece(ABC):
     def getPotentialMoves(self):
         pass
 
+    @staticmethod
+    def cropPotentialMoves(potential_moves):
+        cropped_moves = []
+        for move in potential_moves:
+            if move.row > 7 or move.row < 0 or move.col > 7 or move.col < 0:
+                continue
+            else:
+                cropped_moves.append(move)
+        return cropped_moves
+
     def getImage(self):
         if self._team == BLUE:
             return self.__image_black
@@ -101,8 +111,6 @@ class Knight(Piece):
 
     def getPotentialMoves(self):
         potential_moves = []
-        self.__resetPotentialMoves()
-
         row = self._position.row
         col = self._position.col
 
@@ -118,26 +126,14 @@ class Knight(Piece):
         potential_moves.append(Position(row - 2, col - 1))
         potential_moves.append(Position(row - 1, col - 2))
 
-        for move in potential_moves:
-            if move.row > 7 or move.row < 0 or move.col > 7 or move.col < 0:
-                continue
-            else:
-                self._potential_moves.append(move)
-
-            if DEBUG:
-                print(self.getPotentialMoves.__name__, self._potential_moves)
-        return self._potential_moves
-
-    def __resetPotentialMoves(self):
-        self._potential_moves = []
-
+        return self.cropPotentialMoves(potential_moves)
 
 class Bishop(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
-        Piece.__init__(self, position, team, board)
+    def __init__(self, position, team):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "b"
@@ -147,15 +143,22 @@ class Bishop(Piece):
 
     def getPotentialMoves(self):
         potential_moves = []
-        potential_moves
-        pass
+        row = self._position.row
+        col = self._position.col
+        for i in range(7):
+            potential_moves.append(Position(row + i, col + i))
+            potential_moves.append(Position(row + i, col - i))
+            potential_moves.append(Position(row - i, col - i))
+            potential_moves.append(Position(row - i, col + i))
+
+        return self.cropPotentialMoves(potential_moves)
         
 class Rook(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
-        Piece.__init__(self, position, team, board)
+    def __init__(self, position, team):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "r"
@@ -177,8 +180,8 @@ class Queen(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
-        Piece.__init__(self, position, team, board)
+    def __init__(self, position, team):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "q"
@@ -193,8 +196,8 @@ class King(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
-        Piece.__init__(self, position, team, board)
+    def __init__(self, position, team):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "k"
@@ -209,8 +212,8 @@ class Pawn(Piece):
     __image_black = pygame.transform.scale(knight_black, SCALE_FACTOR)
     __image_white = pygame.transform.scale(knight_white, SCALE_FACTOR)
 
-    def __init__(self, position, team, board):
-        Piece.__init__(self, position, team, board)
+    def __init__(self, position, team):
+        Piece.__init__(self, position, team)
 
     def __repr__(self):
         return "p"

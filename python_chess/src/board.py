@@ -86,7 +86,7 @@ class Board:
     def __startingSetup(self):
         #self.__applcolFENposition("1N3/5/5/5/1n3")
         #self.__applcolFENposition("4N3/pppppppp/8/8/8/8/pppppppp/3n4")
-        self.__applcolFENposition("4N3/8/8/8/8/8/8/3n4")
+        self.__applcolFENposition("3BN3/8/8/8/8/8/8/3nb3")
         #print(self._piecesposition())
         #self.__applcolFENposition("RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr")
 
