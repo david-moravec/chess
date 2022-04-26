@@ -51,10 +51,8 @@ class Board:
             self._valid_moves[key] = []
             for move in potential_moves[key]:
                 target = self._getPiece(move)
-                print(move, target)
                 breakpoint()
                 if (type(target) != type(None)):
-                    print(piece.team())
                     if (target.team() == piece.team()):
                         break
                     elif (target.team() != piece.team()):
