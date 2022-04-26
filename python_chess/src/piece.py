@@ -25,7 +25,7 @@ class Piece(ABC):
         self._team  = team
         self._old_position = (0,0)
         self._position = (0,0)
-        self._potential_moves = {}
+        self._potential_moves : dict
         self.move(position)
         self.moved = False
         self.alive = True
@@ -66,9 +66,9 @@ class Piece(ABC):
 
     def cropPotentialMoves(self):
         cropped_moves = {}
-        for key in self.potential_moves.keys():
+        for key in self._potential_moves.keys():
             cropped_moves[key] = []
-            for move in self.potential_moves[key]:
+            for move in self._potential_moves[key]:
                 if (   move.row > 7 or move.row < 0 
                     or move.col > 7 or move.col < 0
                    ):
@@ -96,21 +96,21 @@ class Knight(Piece):
         return "n"
 
     def getPotentialMoves(self):
-        self.potential_moves = {'dummy' : []}
+        self._potential_moves = {'dummy' : []}
         row = self._position.row
         col = self._position.col
 
-        self.potential_moves['dummy'].append(Position(row + 2, col + 1))
-        self.potential_moves['dummy'].append(Position(row + 1, col + 2))
+        self._potential_moves['dummy'].append(Position(row + 2, col + 1))
+        self._potential_moves['dummy'].append(Position(row + 1, col + 2))
 
-        self.potential_moves['dummy'].append(Position(row - 2, col + 1))
-        self.potential_moves['dummy'].append(Position(row - 1, col + 2))
+        self._potential_moves['dummy'].append(Position(row - 2, col + 1))
+        self._potential_moves['dummy'].append(Position(row - 1, col + 2))
 
-        self.potential_moves['dummy'].append(Position(row + 2, col - 1))
-        self.potential_moves['dummy'].append(Position(row + 1, col - 2))
+        self._potential_moves['dummy'].append(Position(row + 2, col - 1))
+        self._potential_moves['dummy'].append(Position(row + 1, col - 2))
         
-        self.potential_moves['dummy'].append(Position(row - 2, col - 1))
-        self.potential_moves['dummy'].append(Position(row - 1, col - 2))
+        self._potential_moves['dummy'].append(Position(row - 2, col - 1))
+        self._potential_moves['dummy'].append(Position(row - 1, col - 2))
 
         return self.cropPotentialMoves()
 
@@ -134,7 +134,7 @@ class Bishop(Piece):
         return True
 
     def getPotentialMoves(self):
-        self.potential_moves = {'xy': [],
+        self._potential_moves = {'xy': [],
                                 '-xy': [],
                                 'yx': [],
                                 '-yx': []
@@ -142,10 +142,10 @@ class Bishop(Piece):
         row = self._position.row
         col = self._position.col
         for i in range(7):
-            self.potential_moves['xy'].append(Position(row + i, col + i))
-            self.potential_moves['-yx'].append(Position(row + i, col - i))
-            self.potential_moves['yx'].append(Position(row - i, col - i))
-            self.potential_moves['-xy'].append(Position(row - i, col + i))
+            self._potential_moves['xy'].append(Position(row + i, col + i))
+            self._potential_moves['-yx'].append(Position(row + i, col - i))
+            self._potential_moves['yx'].append(Position(row - i, col - i))
+            self._potential_moves['-xy'].append(Position(row - i, col + i))
 
         return self.cropPotentialMoves()
 
@@ -173,7 +173,7 @@ class Rook(Piece):
         return "r"
 
     def getPotentialMoves(self):
-        self.potential_moves = {'x': [],
+        self._potential_moves = {'x': [],
                                 'y': [],
                                 '-x': [],
                                 '-y': []
@@ -181,10 +181,10 @@ class Rook(Piece):
         row = self._position.row
         col = self._position.col
         for i in range(8):
-            self.potential_moves['x'].append(Position(row + i, col))
-            self.potential_moves['-x'].append(Position(row - i, col))
-            self.potential_moves['y'].append(Position(row, col - i))
-            self.potential_moves['-y'].append(Position(row, col + i))
+            self._potential_moves['x'].append(Position(row + i, col))
+            self._potential_moves['-x'].append(Position(row - i, col))
+            self._potential_moves['y'].append(Position(row, col - i))
+            self._potential_moves['-y'].append(Position(row, col + i))
 
         return self.cropPotentialMoves()
         pass
@@ -209,8 +209,11 @@ class Queen(Piece):
         return true
 
     def getPotentialMoves(self):
-        Bishop.getPotentialMoves(self)
-        Rook.getPotentialMoves(self)
+        self._potential_moves = {}
+        bishop_moves = Bishop.getPotentialMoves(self)
+        rook_moves = Rook.getPotentialMoves(self)
+        for move_set in (bishop_moves, rook_moves):
+            self._potential_moves.update(move_set)
         return self.cropPotentialMoves()
 
     def getImage(self):
@@ -233,18 +236,18 @@ class King(Piece):
         return True
 
     def getPotentialMoves(self):
-        self.potential_moves['dummy'] = []
+        self._potential_moves['dummy'] = []
         row = self._position.row
         col = self._position.col
-        self.potential_moves['dummy'].append(Position(row + 1, col))
-        self.potential_moves['dummy'].append(Position(row - 1, col))
-        self.potential_moves['dummy'].append(Position(row, col - 1))
-        self.potential_moves['dummy'].append(Position(row, col + 1))
+        self._potential_moves['dummy'].append(Position(row + 1, col))
+        self._potential_moves['dummy'].append(Position(row - 1, col))
+        self._potential_moves['dummy'].append(Position(row, col - 1))
+        self._potential_moves['dummy'].append(Position(row, col + 1))
 
-        self.potential_moves['dummy'].append(Position(row + 1, col + 1))
-        self.potential_moves['dummy'].append(Position(row + 1, col - 1))
-        self.potential_moves['dummy'].append(Position(row - 1, col - 1))
-        self.potential_moves['dummy'].append(Position(row - 1, col + 1))
+        self._potential_moves['dummy'].append(Position(row + 1, col + 1))
+        self._potential_moves['dummy'].append(Position(row + 1, col - 1))
+        self._potential_moves['dummy'].append(Position(row - 1, col - 1))
+        self._potential_moves['dummy'].append(Position(row - 1, col + 1))
 
         return self.cropPotentialMoves()
         pass
